@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>會議管理後台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 管理後台專用樣式 */
+        :root {
+            --admin-primary: #2c3e50;
+            --admin-secondary: #34495e;
+            --admin-success: #27ae60;
+            --admin-warning: #f39c12;
+            --admin-danger: #e74c3c;
+            --admin-text-base: 16px;
+            --admin-text-large: 18px;
+        }
+        
+        body {
+            background: #ecf0f1;
+            font-size: var(--admin-text-base);
+        }
+        
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: var(--admin-primary);
+            color: white;
+            padding: 16px 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 16px 16px;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 16px;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .menu-item {
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.25s;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            user-select: none;
+        }
+        
+        .menu-item.active {
+            background: var(--admin-secondary);
+            border-left-color: var(--admin-success);
+        }
+        
+        .menu-item:hover,
+        .menu-item:active {
+            background: #34495e;
+        }
+        
+        .main-content {
+            padding: 24px 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--admin-primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--admin-primary);
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border 0.25s;
+            font-family: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--admin-secondary);
+        }
+        
+        .btn-admin {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.25s;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            -webkit-appearance: none;
+            appearance: none;
+            user-select: none;
+        }
+        
+        .btn-admin-primary {
+            background: var(--admin-success);
+            color: white;
+        }
+        
+        .btn-admin-primary:hover,
+        .btn-admin-primary:active {
+            background: #219a52;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+        }
+        
+        .btn-admin-warning {
+            background: var(--admin-warning);
+            color: white;
+        }
+        
+        .btn-admin-warning:hover,
+        .btn-admin-warning:active {
+            background: #e67e22;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.25);
+        }
+        
+        .btn-admin-danger {
+            background: var(--admin-danger);
+            color: white;
+        }
+        
+        .btn-admin-danger:hover,
+        .btn-admin-danger:active {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+        }
+        
+        .btn-admin-info {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-admin-info:hover,
+        .btn-admin-info:active {
+            background: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 16px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            background: var(--admin-primary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            font-size: 0.95rem;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-waiting { background: #d1ecf1; color: #0c5460; }
+        .status-active { background: #d4edda; color: #155724; }
+        .status-serving { background: #cce7ff; color: #004085; }
+        .status-completed { background: #d1d1d1; color: #333; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+        
+        .action-btn:hover,
+        .action-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .alert-admin {
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        
+        .alert-admin-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-admin-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-admin-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .alert-admin-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 32px;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 32px;
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 1rem;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 16px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        
+        .auto-refresh-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 22px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 22px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--admin-success);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(23px);
+        }
+        
+        .debug-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .client-row {
+            transition: all 0.25s ease;
+        }
+        
+        .client-row.new {
+            background-color: #fff3cd !important;
+            animation: highlight 2s ease-in-out;
+        }
+        
+        @keyframes highlight {
+            0% { background-color: #fff3cd; }
+            50% { background-color: #ffeaa7; }
+            100% { background-color: #fff3cd; }
+        }
+        
+        /* 會議管理專用樣式 */
+        .meeting-management {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        
+        .setting-group {
+            background: #e7f5ff;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+        }
+        
+        .setting-group input {
+            flex: 1;
+            max-width: 200px;
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .admin-meeting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        .admin-meeting-table th, .admin-meeting-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .admin-meeting-table th {
+            background-color: #6c757d;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .btn-approve { background: #17a2b8; color: white; }
+        .btn-enter { background: #28a745; color: white; }
+        .btn-finish { background: #6c757d; color: white; }
+        .btn-reject { background: #dc3545; color: white; }
+        
+        .text-size-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--admin-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+        
+        .text-size-toggle:hover,
+        .text-size-toggle:active {
+            transform: scale(1.05);
+        }
+        
+        .large-text {
+            font-size: 20px !important;
+        }
+        
+        .large-text .btn-admin,
+        .large-text .alert-admin,
+        .large-text .form-control,
+        .large-text .menu-item {
+            font-size: 1.05rem;
+        }
+        
+        .large-text .section-header h2 {
+            font-size: 1.7rem;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .debug-controls {
+                flex-direction: column;
+            }
+            
+            .setting-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .setting-group input {
+                max-width: 100%;
+            }
+            
+            .btn-admin {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .text-size-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+                bottom: 16px;
+                right: 16px;
+            }
+            
+            .main-content {
+                padding: 16px 12px;
+            }
+            
+            .content-section {
+                padding: 20px 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 12px 8px;
+            }
+            
+            .content-section {
+                padding: 16px 12px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .section-header > div {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .btn-admin {
+                width: 100%;
+                justify-content: center;
+                margin-right: 0;
+            }
+            
+            .meeting-management {
+                padding: 12px;
+            }
+            
+            .setting-group {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cog"></i> 管理後台</h2>
+                <div id="current-date" style="font-size: 0.85rem; opacity: 0.8;"></div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-section="meeting">
+                    <i class="fas fa-users"></i> 會議管理
+                </li>
+                <li class="menu-item" data-section="settings">
+                    <i class="fas fa-sliders-h"></i> 系統設定
+                </li>
+                <li class="menu-item" data-section="debug">
+                    <i class="fas fa-bug"></i> 系統除錯
+                </li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <!-- 會議管理 -->
+            <div class="content-section active" id="meeting-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> 會議管理</h2>
+                    <div>
+                        <button class="btn-admin btn-admin-primary" id="refresh-meeting-btn">
+                            <i class="fas fa-sync-alt"></i> 重新整理
+                        </button>
+                        <button class="btn-admin btn-admin-warning" id="init-system-btn">
+                            <i class="fas fa-redo"></i> 初始化系統
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="auto-refresh-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="auto-refresh-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span>自動重新整理 (每15秒)</span>
+                </div>
+                
+                <div class="meeting-management">
+                    <div class="setting-group">
+                        <label for="admin-password" style="margin-right: 12px; font-weight: 600;">🔒 管理密碼:</label>
+                        <input type="password" id="admin-password" class="form-control" placeholder="請輸入管理密碼"> 
+                        <button class="btn-admin btn-admin-primary" onclick="loadAdminMeetingList()">
+                            <i class="fas fa-sync-alt"></i> 載入/刷新列表
+                        </button>
+                    </div>
+
+                    <div id="admin-meeting-message" class="alert-admin"></div>
+
+                    <table class="admin-meeting-table" id="admin-meeting-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>報名時間</th>
+                                <th>姓名</th>
+                                <th>狀態</th>
+                                <th>燈種</th>
+                                <th>注意事項</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-meeting-body">
+                            <tr><td colspan="7" class="loading">請輸入密碼並點擊載入列表</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 12px; font-weight: 600; color: var(--admin-primary); font-size: 1rem;">
+                        Line 會議連結: <span id="meeting-link-display">N/A</span> | 
+                        最大等待人數: <span id="max-clients-display">N/A</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 系統設定 -->
+            <div class="content-section" id="settings-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-sliders-h"></i> 系統設定</h2>
+                    <div>
+                        <button class="btn-admin btn-admin-primary" onclick="loadSettings()">
+                            <i class="fas fa-sync-alt"></i> 重新載入
+                        </button>
+                        <button class="btn-admin btn-admin-warning" onclick="repairClientData()">
+                            <i class="fas fa-tools"></i> 修復客戶資料
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="settings-alert"></div>
+                
+                <form id="settings-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Line 會議連結</label>
+                            <input type="url" class="form-control" name="LINE_MEETING_LINK" placeholder="https://meet.line.com/..." required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">最大等待人數</label>
+                            <input type="number" class="form-control" name="MAX_WAITING_CLIENTS" min="1" max="50" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">管理員密碼</label>
+                            <input type="password" class="form-control" name="HOST_PASSWORD" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">今日指定燈種</label>
+                            <select class="form-control" name="TODAY_LIGHT" required>
+                                <option value="光明燈">光明燈</option>
+                                <option value="財神燈">財神燈</option>
+                                <option value="太歲燈">太歲燈</option>
+                            </select>
+                            <small style="color: #666; display: block; margin-top: 4px;">此設定將自動套用到客戶端</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-admin btn-admin-primary">
+                        <i class="fas fa-save"></i> 儲存設定
+                    </button>
+                </form>
+            </div>
+            
+            <!-- 系統除錯 -->
+            <div class="content-section" id="debug-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bug"></i> 系統除錯</h2>
+                    <div class="debug-controls">
+                        <button class="btn-admin btn-admin-warning" id="test-system-btn">
+                            <i class="fas fa-vial"></i> 執行系統測試
+                        </button>
+                        <button class="btn-admin btn-admin-info" id="test-db-btn">
+                            <i class="fas fa-database"></i> 測試資料庫連接
+                        </button>
+                        <button class="btn-admin btn-admin-danger" id="clear-log-btn">
+                            <i class="fas fa-trash"></i> 清除日誌
+                        </button>
+                        <button class="btn-admin btn-admin-info" id="test-data-btn">
+                            <i class="fas fa-user-plus"></i> 添加測試客戶
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="debug-alert"></div>
+                
+                <div class="debug-info" id="debug-log">
+                    <div>系統日誌將顯示在這裡...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="text-size-toggle" id="text-size-toggle" title="調整字體大小">
+        <i class="fas fa-text-height"></i>
+    </button>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 管理後台專用 JavaScript
+        let debugLog = [];
+        let refreshInterval = null;
+        let isLargeText = localStorage.getItem('adminLargeText') === 'true';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('管理後台初始化中...');
+            initializeAdmin();
+        });
+        
+        function initializeAdmin() {
+            // 應用字體設定
+            if (isLargeText) {
+                document.body.classList.add('large-text');
+                updateTextSizeToggle(true);
+            }
+            
+            setupMenuNavigation();
+            setupEventListeners();
+            setupAutoRefresh();
+            loadCurrentDate();
+        }
+        
+        function setupEventListeners() {
+            const initSystemBtn = document.getElementById('init-system-btn');
+            const refreshMeetingBtn = document.getElementById('refresh-meeting-btn');
+            const testSystemBtn = document.getElementById('test-system-btn');
+            const clearLogBtn = document.getElementById('clear-log-btn');
+            const testDataBtn = document.getElementById('test-data-btn');
+            const testDbBtn = document.getElementById('test-db-btn');
+            const textSizeToggle = document.getElementById('text-size-toggle');
+            
+            // 使用防抖優化性能
+            const debouncedRefresh = debounce(refreshMeetingData, 300);
+            const debouncedTestSystem = debounce(testSystem, 300);
+            
+            initSystemBtn.addEventListener('click', initializeSystem);
+            refreshMeetingBtn.addEventListener('click', debouncedRefresh);
+            testSystemBtn.addEventListener('click', debouncedTestSystem);
+            clearLogBtn.addEventListener('click', clearDebugLog);
+            testDataBtn.addEventListener('click', loadTestData);
+            testDbBtn.addEventListener('click', testDatabaseConnection);
+            textSizeToggle.addEventListener('click', toggleTextSize);
+            
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveSettings();
+            });
+            
+            // 優化觸控體驗
+            document.querySelectorAll('.btn-admin, .menu-item, .action-btn').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        function toggleTextSize() {
+            isLargeText = !isLargeText;
+            document.body.classList.toggle('large-text', isLargeText);
+            localStorage.setItem('adminLargeText', isLargeText);
+            updateTextSizeToggle(isLargeText);
+            
+            const button = document.getElementById('text-size-toggle');
+            button.classList.add('fade-in');
+            setTimeout(() => button.classList.remove('fade-in'), 300);
+        }
+        
+        function updateTextSizeToggle(isLarge) {
+            const button = document.getElementById('text-size-toggle');
+            if (isLarge) {
+                button.title = '恢復正常字體';
+                button.innerHTML = '<i class="fas fa-text-width"></i>';
+            } else {
+                button.title = '調整為大字體';
+                button.innerHTML = '<i class="fas fa-text-height"></i>';
+            }
+        }
+        
+        function setupAutoRefresh() {
+            const toggle = document.getElementById('auto-refresh-toggle');
+            toggle.addEventListener('change', function() {
+                if (this.checked) {
+                    startAutoRefresh();
+                } else {
+                    stopAutoRefresh();
+                }
+            });
+        }
+        
+        function startAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+            refreshInterval = setInterval(() => {
+                const activeSection = document.querySelector('.content-section.active').id;
+                if (activeSection === 'meeting-section') {
+                    const password = document.getElementById('admin-password').value;
+                    if (password) {
+                        loadAdminMeetingList();
+                    }
+                }
+                addDebugLog('🔄 自動重新整理完成');
+            }, 15000);
+        }
+        
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+        
+        function setupMenuNavigation() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    const sectionId = this.dataset.section + '-section';
+                    document.getElementById(sectionId).classList.add('active');
+                    
+                    if (this.dataset.section === 'settings') {
+                        loadSettings();
+                    }
+                });
+            });
+        }
+        
+        function loadCurrentDate() {
+            sheetsService.getTaiwanDate()
+                .then(date => {
+                    document.getElementById('current-date').textContent = date;
+                })
+                .catch(error => {
+                    console.error('載入日期失敗:', error);
+                });
+        }
+        
+        function refreshMeetingData() {
+            const password = document.getElementById('admin-password').value;
+            if (password) {
+                loadAdminMeetingList();
+            }
+            showMeetingMessage('資料已重新整理！', 'success');
+        }
+        
+        function loadTestData() {
+            addDebugLog('載入測試數據...');
+            
+            sheetsService.addTestClient()
+                .then(result => {
+                    if (result.error) {
+                        showDebugAlert('載入測試數據失敗: ' + result.error, 'danger');
+                        return;
+                    }
+                    
+                    showDebugAlert(`成功載入測試數據: ${result.message}`, 'success');
+                    refreshMeetingData();
+                })
+                .catch(error => {
+                    console.error('載入測試數據失敗:', error);
+                    showDebugAlert('載入測試數據失敗: ' + error.message, 'danger');
+                });
+        }
+        
+        function loadSettings() {
+            console.log('載入系統設定...');
+            
+            sheetsService.getMeetingSettings()
+                .then(settings => {
+                    console.log('收到管理設定:', settings);
+                    if (!settings) {
+                        showSettingsAlert('載入設定失敗，使用預設值', 'warning');
+                        return;
+                    }
+                    
+                    const form = document.getElementById('settings-form');
+                    Object.keys(settings).forEach(key => {
+                        const input = form.querySelector(`[name="${key}"]`);
+                        if (input) {
+                            input.value = settings[key];
+                            console.log(`設定表單: ${key} = ${settings[key]}`);
+                        }
+                    });
+                    
+                    showSettingsAlert('設定載入完成', 'success');
+                })
+                .catch(error => {
+                    console.error('載入設定失敗:', error);
+                    showSettingsAlert('載入設定失敗: ' + error.message, 'danger');
+                });
+        }
+        
+        function saveSettings() {
+            const form = document.getElementById('settings-form');
+            const formData = new FormData(form);
+            const settings = {};
+            
+            for (let [key, value] of formData.entries()) {
+                settings[key] = value;
+            }
+            
+            sheetsService.updateSettings(settings)
+                .then(result => {
+                    if (result.error) {
+                        showSettingsAlert('儲存失敗: ' + result.error, 'danger');
+                    } else {
+                        showSettingsAlert('設定已成功更新！', 'success');
+                    }
+                })
+                .catch(error => {
+                    showSettingsAlert('儲存失敗: ' + error.message, 'danger');
+                });
+        }
+        
+        function initializeSystem() {
+            if (confirm('確定要初始化系統嗎？這將創建必要的資料表並設定預設值（包含測試資料）。')) {
+                showMeetingMessage('系統初始化中...', 'info');
+                addDebugLog('開始初始化系統...');
+                
+                sheetsService.initializeSystem()
+                    .then(result => {
+                        if (result.error) {
+                            showMeetingMessage('初始化失敗: ' + result.error, 'danger');
+                            addDebugLog('初始化失敗: ' + result.error);
+                        } else {
+                            showMeetingMessage('系統初始化成功！' + (result.testData || ''), 'success');
+                            addDebugLog('系統初始化成功！' + (result.testData || ''));
+                            setTimeout(() => {
+                                loadSettings();
+                            }, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        showMeetingMessage('初始化失敗: ' + error.message, 'danger');
+                        addDebugLog('初始化失敗: ' + error.message);
+                    });
+            }
+        }
+        
+        function repairClientData() {
+            if (confirm('確定要修復客戶資料嗎？這將檢查並修正所有客戶資料的格式問題。')) {
+                showSettingsAlert('正在修復客戶資料...', 'info');
+                addDebugLog('開始修復客戶資料...');
+                
+                sheetsService.repairClientData()
+                    .then(result => {
+                        if (result.error) {
+                            showSettingsAlert('修復失敗: ' + result.error, 'danger');
+                            addDebugLog('修復失敗: ' + result.error);
+                        } else {
+                            showSettingsAlert(result.message, 'success');
+                            addDebugLog(result.message);
+                            setTimeout(() => {
+                                refreshMeetingData();
+                            }, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        showSettingsAlert('修復錯誤: ' + error.message, 'danger');
+                        addDebugLog('修復錯誤: ' + error.message);
+                    });
+            }
+        }
+        
+        function testSystem() {
+            addDebugLog('開始系統測試...');
+            
+            sheetsService.testSystem()
+                .then(result => {
+                    if (result.error) {
+                        addDebugLog('❌ 系統測試失敗: ' + result.error);
+                        showDebugAlert('系統測試失敗', 'danger');
+                    } else {
+                        addDebugLog('✅ 系統測試完成！');
+                        addDebugLog('📋 設定: ' + JSON.stringify(result.settings));
+                        addDebugLog('👥 總客戶數: ' + result.totalClients);
+                        addDebugLog('⏳ 待審核客戶: ' + result.pendingClients);
+                        addDebugLog('📊 等待中客戶: ' + result.waitingClients);
+                        addDebugLog('📈 統計資料: ' + JSON.stringify(result.stats));
+                        addDebugLog('💬 訊息: ' + result.message);
+                        
+                        showDebugAlert('系統測試完成！請查看日誌', 'success');
+                    }
+                })
+                .catch(error => {
+                    addDebugLog('❌ 系統測試錯誤: ' + error.message);
+                    showDebugAlert('系統測試錯誤: ' + error.message, 'danger');
+                });
+        }
+        
+        function testDatabaseConnection() {
+            addDebugLog('測試資料庫連接...');
+            
+            sheetsService.testDatabaseConnection()
+                .then(result => {
+                    if (result.success) {
+                        addDebugLog('✅ 資料庫連接成功！');
+                        addDebugLog(`試算表名稱: ${result.spreadsheetName}`);
+                        addDebugLog(`工作表列表: ${result.sheetNames.join(', ')}`);
+                        addDebugLog(`Clients工作表存在: ${result.clientsExists}`);
+                        addDebugLog(`Settings工作表存在: ${result.settingsExists}`);
+                        addDebugLog(`Clients行數: ${result.clientsRowCount}`);
+                        addDebugLog(`客戶資料數: ${result.clientsDataCount}`);
+                        addDebugLog('範例資料: ' + JSON.stringify(result.sampleData));
+                        
+                        showDebugAlert('資料庫連接成功！請查看日誌', 'success');
+                    } else {
+                        addDebugLog('❌ 資料庫連接失敗: ' + result.error);
+                        showDebugAlert('資料庫連接失敗: ' + result.error, 'danger');
+                    }
+                })
+                .catch(error => {
+                    addDebugLog('❌ 資料庫連接錯誤: ' + error.message);
+                    showDebugAlert('資料庫連接錯誤: ' + error.message, 'danger');
+                });
+        }
+        
+        // 會議管理功能
+        function loadAdminMeetingList() {
+            const password = document.getElementById('admin-password').value;
+            if (!password) {
+                showMeetingMessage('請輸入管理密碼。', 'danger');
+                return;
+            }
+            showMeetingMessage('正在載入客戶列表...', 'info');
+            
+            sheetsService.getAdminClientsList(password)
+                .then(function(res) {
+                    if (res.error) {
+                        showMeetingMessage('載入失敗: ' + res.error + ' 請檢查密碼是否正確。', 'danger');
+                        document.getElementById('admin-meeting-body').innerHTML = '<tr><td colspan="7" class="no-data">密碼錯誤，請重新輸入。</td></tr>';
+                        return;
+                    }
+                    updateAdminMeetingTable(res.list);
+                    
+                    document.getElementById('meeting-link-display').textContent = res.settings.LINE_MEETING_LINK || 'N/A';
+                    document.getElementById('max-clients-display').textContent = res.settings.MAX_WAITING_CLIENTS || 'N/A';
+                    
+                    showMeetingMessage(`成功載入 ${res.list.length} 筆客戶資料。`, 'success');
+                })
+                .catch(function(error) {
+                    showMeetingMessage('載入失敗: ' + error.message, 'danger');
+                });
+        }
+        
+        function updateAdminMeetingTable(clients) {
+            const tbody = document.getElementById('admin-meeting-body');
+            tbody.innerHTML = '';
+            const password = document.getElementById('admin-password').value;
+            
+            if (clients && clients.length > 0) {
+                // 確保由上到下小到大排序（按報名時間）
+                clients.forEach(client => {
+                    const row = tbody.insertRow();
+                    row.insertCell().textContent = client.row;
+                    row.insertCell().textContent = client.time;
+                    row.insertCell().textContent = client.name;
+                    
+                    const statusCell = row.insertCell();
+                    statusCell.innerHTML = `<span class="status-badge status-${getStatusClass(client.status)}">${client.status}</span>`;
+                    
+                    row.insertCell().textContent = client.lights;
+                    row.insertCell().textContent = client.notes;
+                    
+                    const actionCell = row.insertCell();
+                    let buttons = '';
+                    
+                    const rowParam = client.row;
+                    const pwParam = password;
+                    
+                    if (client.status === '審核中') {
+                        buttons += `<button class="action-btn btn-approve" onclick="changeClientStatus('${rowParam}', '等待中', '${pwParam}')">✅ 通過審核</button>`;
+                        buttons += `<button class="action-btn btn-reject" onclick="changeClientStatus('${rowParam}', '未通過', '${pwParam}')">❌ 不通過</button>`;
+                    } else if (client.status === '等待中') {
+                        buttons += `<button class="action-btn btn-enter" onclick="changeClientStatus('${rowParam}', '進入中', '${pwParam}')">🚀 允許進入</button>`;
+                    } else if (client.status === '進入中' || client.status === '服務中') {
+                        buttons += `<button class="action-btn btn-finish" onclick="changeClientStatus('${rowParam}', '結束', '${pwParam}')">🚪 結束服務</button>`;
+                    } else if (client.status === '結束' || client.status === '未通過') {
+                        buttons += `<span style="color: #666; font-style: italic;">已結案</span>`;
+                    } else {
+                        buttons += `<span style="color: #666; font-style: italic;">無可用操作</span>`;
+                    }
+                    
+                    actionCell.innerHTML = `<div class="action-buttons">${buttons}</div>`;
+                });
+            } else {
+                const row = tbody.insertRow();
+                row.insertCell().textContent = '無客戶報名';
+                row.cells[0].colSpan = 7;
+                row.cells[0].style.textAlign = 'center';
+                row.cells[0].className = 'no-data';
+            }
+        }
+        
+        function changeClientStatus(row, newStatus, password) {
+            if (!password) {
+                showMeetingMessage('請先輸入管理密碼並載入列表。', 'danger');
+                return;
+            }
+            
+            showMeetingMessage(`正在更新行 ${row} 狀態為 ${newStatus}...`, 'info');
+            
+            sheetsService.updateClientStatus(row, newStatus, password)
+                .then(function(msg) {
+                    if (msg.includes('權限錯誤')) {
+                        showMeetingMessage('操作失敗: ' + msg + ' 請重新輸入密碼。', 'danger');
+                    } else if (msg.includes('更新失敗')) {
+                        showMeetingMessage('操作失敗: ' + msg + ' 請檢查行號。', 'danger');
+                    } else {
+                        showMeetingMessage(msg, 'success');
+                    }
+                    loadAdminMeetingList();
+                })
+                .catch(function(error) {
+                    showMeetingMessage('更新狀態失敗: ' + error.message, 'danger');
+                });
+        }
+        
+        function showMeetingMessage(msg, type) {
+            const el = document.getElementById('admin-meeting-message');
+            el.innerHTML = msg;
+            el.className = `alert-admin alert-admin-${type}`;
+            el.style.display = 'block';
+        }
+        
+        function showSettingsAlert(msg, type) {
+            showAlert('settings-alert', msg, type);
+        }
+        
+        function showDebugAlert(msg, type) {
+            showAlert('debug-alert', msg, type);
+        }
+        
+        function getStatusClass(status) {
+            switch(status) {
+                case '審核中': return 'pending';
+                case '等待中': return 'waiting';
+                case '進入中': return 'active';
+                case '服務中': return 'serving';
+                case '結束': return 'completed';
+                case '未通過': return 'pending';
+                default: return 'pending';
+            }
+        }
+        
+        function addDebugLog(message) {
+            const timestamp = new Date().toLocaleTimeString('zh-TW');
+            debugLog.push(`[${timestamp}] ${message}`);
+            
+            const debugElement = document.getElementById('debug-log');
+            if (debugElement) {
+                debugElement.innerHTML = debugLog.map(log => `<div>${log}</div>`).join('');
+                debugElement.scrollTop = debugElement.scrollHeight;
+            }
+        }
+        
+        function clearDebugLog() {
+            debugLog = [];
+            const debugElement = document.getElementById('debug-log');
+            if (debugElement) {
+                debugElement.innerHTML = '<div>日誌已清除</div>';
+            }
+        }
+        
+        function showAlert(alertId, message, type) {
+            const alertElement = document.getElementById(alertId);
+            if (!alertElement) return;
+            
+            const alertClass = type === 'success' ? 'alert-admin-success' : 
+                              type === 'danger' ? 'alert-admin-danger' : 
+                              type === 'warning' ? 'alert-admin-warning' : 'alert-admin-info';
+            
+            alertElement.innerHTML = `
+                <div class="alert-admin ${alertClass}">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                                  type === 'danger' ? 'fa-exclamation-triangle' : 
+                                  type === 'warning' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                if (alertElement.innerHTML.includes(message)) {
+                    alertElement.innerHTML = '';
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
