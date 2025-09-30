@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>海天宮尋名冊解惑系統</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 客戶端專用樣式 */
+        .light-type-display {
+            background: #e8f5e8;
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 1.1rem;
+            user-select: none;
+        }
+        
+        .checkbox-label:hover,
+        .checkbox-label:active {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .checkbox-label input {
+            margin-right: 10px;
+            transform: scale(1.4);
+        }
+        
+        .waiting-area {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .queue-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .queue-number {
+            font-size: clamp(3rem, 12vw, 4rem);
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 16px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        .queue-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .queue-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: all 0.25s ease;
+            font-size: 1.1rem;
+        }
+        
+        .queue-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .queue-item.current-user {
+            background: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+            font-weight: 600;
+        }
+        
+        .meeting-link {
+            display: block;
+            text-align: center;
+            padding: 18px;
+            background: var(--success-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            margin-top: 16px;
+            display: none;
+            transition: all 0.25s ease;
+            animation: bounce 2s infinite;
+            font-weight: 600;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+        
+        .meeting-link.disabled {
+            background: #cccccc !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+            animation: none !important;
+            transform: none !important;
+        }
+        
+        .meeting-link:hover,
+        .meeting-link:active {
+            background: #1E7A1E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 139, 34, 0.3);
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 1.2rem;
+            animation: slideDown 0.4s ease-out;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .auto-refresh-info {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            margin-top: 12px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 大字體模式 */
+        .large-text .form-input,
+        .large-text .btn,
+        .large-text .alert {
+            font-size: 1.4rem !important;
+        }
+        
+        .large-text .checkbox-label {
+            font-size: 1.3rem;
+            padding: 18px;
+        }
+        
+        .text-size-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            z-index: 1000;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+        
+        .text-size-toggle:hover,
+        .text-size-toggle:active {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .checkbox-group {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .queue-number {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .queue-number {
+                font-size: 2.5rem;
+            }
+            
+            .checkbox-label {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-hands-helping"></i> 海天宮尋名冊解惑系統</h1>
+            <div class="subtitle">線上報名與諮詢服務</div>
+        </div>
+        
+        <div class="content">
+            <div id="application-form">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i> 真實姓名
+                    </label>
+                    <input type="text" id="client-name" class="form-input" placeholder="請輸入您的真實姓名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lightbulb"></i> 今日燈種
+                    </label>
+                    <div id="light-type-display" class="light-type-display">
+                        <i class="fas fa-spinner fa-spin"></i> 載入中...
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-sticky-note"></i> 注意事項 (可複選)
+                    </label>
+                    <div class="checkbox-group" id="notes-checkboxes">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notes" value="身體"> 身體
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notes" value="睡眠"> 睡眠
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notes" value="外出"> 外出
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notes" value="水邊"> 水邊
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notes" value="其他"> 其他
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="submit-btn">
+                    <i class="fas fa-paper-plane"></i> 提交報名
+                </button>
+                
+                <button class="btn btn-secondary" id="check-status-btn">
+                    <i class="fas fa-search"></i> 查詢等待狀態
+                </button>
+            </div>
+            
+            <div id="alert-area"></div>
+            
+            <div class="waiting-area" id="waiting-area">
+                <div class="queue-info">
+                    <h3>您的申請狀態</h3>
+                    <div class="queue-number" id="queue-number">-</div>
+                    <div class="status-badge" id="status-badge">審核中</div>
+                    <div id="current-position-info" style="margin-top: 12px; color: #666; font-size: 1.1rem;"></div>
+                </div>
+                
+                <a href="#" class="meeting-link" id="meeting-link" target="_blank">
+                    <i class="fas fa-video"></i> 進入 Line 會議室
+                </a>
+                
+                <div id="queue-list-container" style="display: none;">
+                    <h4>等待名單</h4>
+                    <div class="queue-list" id="queue-list">
+                        <div id="queue-list-content">
+                            <!-- 等待名單將動態生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="auto-refresh-info" id="auto-refresh-info">
+                    <i class="fas fa-sync-alt"></i> 狀態自動更新中...
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="text-size-toggle" id="text-size-toggle" title="調整字體大小">
+        <i class="fas fa-text-height"></i>
+    </button>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 客戶端專用 JavaScript
+        let currentClient = null;
+        let refreshInterval = null;
+        let hasMeetingEnded = false;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupClientEventListeners();
+            loadSettings();
+            
+            // 從本地儲存恢復姓名
+            const storedName = localStorage.getItem('clientName');
+            if (storedName) {
+                document.getElementById('client-name').value = storedName;
+            }
+        });
+        
+        function setupClientEventListeners() {
+            const submitBtn = document.getElementById('submit-btn');
+            const checkStatusBtn = document.getElementById('check-status-btn');
+            const textSizeToggle = document.getElementById('text-size-toggle');
+            const clientNameInput = document.getElementById('client-name');
+            
+            // 使用防抖優化性能
+            const debouncedSubmit = debounce(submitApplication, 300);
+            const debouncedCheckStatus = debounce(checkStatus, 300);
+            
+            submitBtn.addEventListener('click', debouncedSubmit);
+            checkStatusBtn.addEventListener('click', debouncedCheckStatus);
+            textSizeToggle.addEventListener('click', toggleTextSize);
+            
+            // 輸入框Enter鍵支援
+            clientNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    debouncedSubmit();
+                }
+            });
+            
+            // 優化觸控體驗
+            document.querySelectorAll('.btn, .checkbox-label').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        async function loadSettings() {
+            showLoading('載入系統設定中...');
+            
+            try {
+                const settings = await sheetsService.getMeetingSettings();
+                const lightDisplay = document.getElementById('light-type-display');
+                const lightType = settings.TODAY_LIGHT || '光明燈';
+                
+                lightDisplay.innerHTML = `
+                    <i class="fas fa-lightbulb"></i> ${lightType}
+                    <div style="font-size: 1rem; color: #666; margin-top: 6px;">
+                        今日指定燈種，無需選擇
+                    </div>
+                `;
+                
+                hideLoading();
+            } catch (error) {
+                const lightDisplay = document.getElementById('light-type-display');
+                lightDisplay.innerHTML = `
+                    <i class="fas fa-lightbulb"></i> 光明燈
+                    <div style="font-size: 1rem; color: #666; margin-top: 6px;">
+                        今日指定燈種，無需選擇
+                    </div>
+                `;
+                hideLoading();
+                showAlert('系統設定載入失敗，使用預設燈種', 'warning');
+            }
+        }
+        
+        async function submitApplication() {
+            const name = document.getElementById('client-name').value.trim();
+            const notes = getSelectedNotes();
+            
+            if (!name) {
+                showAlert('請填寫真實姓名', 'danger');
+                document.getElementById('client-name').classList.add('shake');
+                setTimeout(() => document.getElementById('client-name').classList.remove('shake'), 500);
+                return;
+            }
+            
+            if (notes.length === 0) {
+                showAlert('請至少選擇一項注意事項', 'danger');
+                return;
+            }
+            
+            showLoading('提交申請中...');
+            
+            const clientData = {
+                name: name,
+                notes: notes
+            };
+            
+            // 儲存姓名到本地
+            localStorage.setItem('clientName', name);
+            
+            try {
+                const result = await sheetsService.submitApplication(clientData);
+                
+                if (result.error) {
+                    showAlert(result.error, 'danger');
+                } else {
+                    currentClient = { name: name, ...result };
+                    showApplicationResult(result);
+                    // 所有狀態都啟動自動刷新
+                    startStatusRefresh();
+                }
+            } catch (error) {
+                console.error('提交失敗:', error);
+                showAlert('提交失敗: ' + error.message, 'danger');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        function getSelectedNotes() {
+            const checkboxes = document.querySelectorAll('input[name="notes"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+        
+        function showApplicationResult(result) {
+            document.getElementById('application-form').style.display = 'none';
+            document.getElementById('waiting-area').style.display = 'block';
+            
+            updateClientStatusDisplay(result);
+            showAlert(result.message, 'success');
+        }
+        
+        function updateClientStatusDisplay(result) {
+            const statusBadge = document.getElementById('status-badge');
+            statusBadge.textContent = result.status;
+            statusBadge.className = 'status-badge ' + getStatusClass(result.status);
+            
+            const positionInfo = document.getElementById('current-position-info');
+            const meetingLink = document.getElementById('meeting-link');
+            const queueListContainer = document.getElementById('queue-list-container');
+            const refreshInfo = document.getElementById('auto-refresh-info');
+            
+            if (result.status === '審核中') {
+                positionInfo.innerHTML = '<i class="fas fa-clock"></i> 請等待管理員審核，系統會自動更新狀態';
+                positionInfo.style.color = 'var(--warning-color)';
+                document.getElementById('queue-number').textContent = '審核中';
+                meetingLink.style.display = 'none';
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'block';
+            } else if (result.status === '未通過') {
+                positionInfo.innerHTML = '<i class="fas fa-times-circle"></i> 審核未通過，請聯絡服務人員';
+                positionInfo.style.color = 'var(--danger-color)';
+                document.getElementById('queue-number').textContent = '未通過';
+                meetingLink.style.display = 'none';
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'none';
+                stopStatusRefresh();
+            } else if (result.status === '結束') {
+                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 服務已結束，感謝您的參與';
+                positionInfo.style.color = 'var(--success-color)';
+                document.getElementById('queue-number').textContent = '已結束';
+                meetingLink.style.display = 'block';
+                meetingLink.classList.add('disabled');
+                meetingLink.innerHTML = '<i class="fas fa-video-slash"></i> 服務已結束';
+                meetingLink.onclick = function(e) { e.preventDefault(); };
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'none';
+                hasMeetingEnded = true;
+                stopStatusRefresh();
+            }
+        }
+        
+        function checkStatus() {
+            const name = document.getElementById('client-name').value.trim();
+            
+            if (!name) {
+                showAlert('請先填寫姓名以查詢狀態', 'danger');
+                document.getElementById('client-name').classList.add('shake');
+                setTimeout(() => document.getElementById('client-name').classList.remove('shake'), 500);
+                return;
+            }
+            
+            currentClient = { name: name };
+            // 儲存姓名到本地
+            localStorage.setItem('clientName', name);
+            startStatusRefresh();
+        }
+        
+        function startStatusRefresh() {
+            loadWaitingQueue();
+            if (!hasMeetingEnded) {
+                // 清除現有間隔
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+                // 根據狀態設置不同的刷新頻率
+                const refreshRate = getRefreshRate();
+                refreshInterval = setInterval(loadWaitingQueue, refreshRate);
+                
+                console.log(`啟動自動刷新，頻率: ${refreshRate}ms`);
+            }
+        }
+        
+        function getRefreshRate() {
+            // 根據當前狀態返回不同的刷新頻率
+            if (!currentClient) return 10000; // 預設10秒
+            
+            // 如果是審核中狀態，刷新頻率較慢
+            if (currentClient.status === '審核中') {
+                return 15000; // 15秒
+            }
+            // 如果是活躍狀態，刷新頻率較快
+            if (['等待中', '進入中', '服務中'].includes(currentClient.status)) {
+                return 5000; // 5秒
+            }
+            
+            return 10000; // 預設10秒
+        }
+        
+        function stopStatusRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+                console.log('停止自動刷新');
+            }
+        }
+        
+        async function loadWaitingQueue() {
+            if (!currentClient || !currentClient.name) return;
+            
+            try {
+                const data = await sheetsService.getWaitingList(currentClient.name);
+                displayQueue(data);
+                
+                if (data.client) {
+                    updateClientStatusFromQueue(data.client, data.list);
+                    // 更新當前客戶狀態
+                    currentClient.status = data.client.status;
+                    // 動態調整刷新頻率
+                    adjustRefreshRate();
+                } else {
+                    // 如果找不到客戶資料，顯示未報名狀態
+                    document.getElementById('application-form').style.display = 'block';
+                    document.getElementById('waiting-area').style.display = 'none';
+                    showAlert('找不到您的報名資料，請重新報名', 'warning');
+                    stopStatusRefresh();
+                }
+            } catch (error) {
+                console.error('載入隊列失敗:', error);
+                displayQueue({ list: [] });
+                showAlert('載入等待名單失敗，請稍後再試', 'danger');
+            }
+        }
+        
+        function adjustRefreshRate() {
+            if (!refreshInterval) return;
+            
+            const newRate = getRefreshRate();
+            // 如果頻率改變，重新設置間隔
+            if (newRate !== getRefreshRate()) {
+                stopStatusRefresh();
+                startStatusRefresh();
+            }
+        }
+        
+        function displayQueue(data) {
+            const queueListContent = document.getElementById('queue-list-content');
+            const list = data.list || [];
+            const queueListContainer = document.getElementById('queue-list-container');
+            
+            // 只有當有等待中客戶且當前客戶狀態不是審核中時才顯示隊列
+            if (list.length > 0) {
+                queueListContainer.style.display = 'block';
+                
+                let html = '';
+                
+                list.forEach(item => {
+                    const statusClass = getStatusClass(item.status);
+                    const isCurrentUser = currentClient && 
+                        (item.name && currentClient.name && maskName(currentClient.name) === item.name);
+                    
+                    const itemClass = isCurrentUser ? 'queue-item current-user' : 'queue-item';
+                    const highlightStyle = isCurrentUser ? 'background-color: #fff3cd; border-left: 4px solid var(--warning-color);' : '';
+                    
+                    html += `
+                        <div class="${itemClass} fade-in" style="${highlightStyle}">
+                            <div>
+                                <strong>${item.queue_num || ''}號</strong> - ${item.display_name || '未知'}
+                                ${isCurrentUser ? '<span style="color: var(--warning-color); margin-left: 8px; font-weight: 600;">(您)</span>' : ''}
+                            </div>
+                            <div class="status-badge ${statusClass}">${item.status || '未知'}</div>
+                        </div>
+                    `;
+                });
+                
+                queueListContent.innerHTML = html;
+            } else {
+                queueListContainer.style.display = 'none';
+                queueListContent.innerHTML = '<p style="text-align: center; padding: 20px; font-size: 1.1rem;">目前沒有等待中的客戶</p>';
+            }
+        }
+        
+        function updateClientStatusFromQueue(client, list) {
+            document.getElementById('application-form').style.display = 'none';
+            document.getElementById('waiting-area').style.display = 'block';
+            
+            document.getElementById('queue-number').textContent = client.queue_num || '-';
+            
+            const statusBadge = document.getElementById('status-badge');
+            statusBadge.textContent = client.status;
+            statusBadge.className = 'status-badge ' + getStatusClass(client.status);
+            
+            const positionInfo = document.getElementById('current-position-info');
+            const meetingLink = document.getElementById('meeting-link');
+            const queueListContainer = document.getElementById('queue-list-container');
+            const refreshInfo = document.getElementById('auto-refresh-info');
+            
+            // 根據狀態更新顯示
+            if (client.status === '審核中') {
+                positionInfo.innerHTML = '<i class="fas fa-clock"></i> 請等待管理員審核，系統會自動更新狀態';
+                positionInfo.style.color = 'var(--warning-color)';
+                meetingLink.style.display = 'none';
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'block';
+            } else if (client.status === '等待中') {
+                const queueNum = client.queue_num;
+                if (queueNum === 1) {
+                    positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 您是第一位，請準備進入會議室';
+                    positionInfo.style.color = 'var(--success-color)';
+                } else if (queueNum > 1) {
+                    positionInfo.innerHTML = `<i class="fas fa-clock"></i> 您前面還有 ${queueNum - 1} 位等待者`;
+                    positionInfo.style.color = 'var(--warning-color)';
+                } else {
+                    positionInfo.innerHTML = '<i class="fas fa-clock"></i> 請等待管理員安排';
+                    positionInfo.style.color = 'var(--warning-color)';
+                }
+                meetingLink.style.display = 'none';
+                queueListContainer.style.display = 'block';
+                refreshInfo.style.display = 'block';
+            } else if (client.status === '進入中' || client.status === '服務中') {
+                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 請準備進入會議室';
+                positionInfo.style.color = 'var(--success-color)';
+                loadMeetingLink();
+                meetingLink.style.display = 'block';
+                meetingLink.classList.remove('disabled');
+                queueListContainer.style.display = 'block';
+                refreshInfo.style.display = 'block';
+            } else if (client.status === '結束') {
+                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 服務已結束，感謝您的參與';
+                positionInfo.style.color = 'var(--success-color)';
+                meetingLink.style.display = 'block';
+                meetingLink.classList.add('disabled');
+                meetingLink.innerHTML = '<i class="fas fa-video-slash"></i> 服務已結束';
+                meetingLink.onclick = function(e) { e.preventDefault(); };
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'none';
+                hasMeetingEnded = true;
+                stopStatusRefresh();
+            } else if (client.status === '未通過') {
+                positionInfo.innerHTML = '<i class="fas fa-times-circle"></i> 審核未通過，請聯絡服務人員';
+                positionInfo.style.color = 'var(--danger-color)';
+                meetingLink.style.display = 'none';
+                queueListContainer.style.display = 'none';
+                refreshInfo.style.display = 'none';
+                stopStatusRefresh();
+            }
+        }
+        
+        function getStatusClass(status) {
+            switch(status) {
+                case '審核中': return 'status-pending';
+                case '等待中': return 'status-waiting';
+                case '進入中': return 'status-active';
+                case '服務中': return 'status-serving';
+                case '結束': return 'status-completed';
+                case '未通過': return 'status-pending';
+                default: return 'status-pending';
+            }
+        }
+        
+        async function loadMeetingLink() {
+            try {
+                const settings = await sheetsService.getMeetingSettings();
+                if (settings && settings.LINE_MEETING_LINK) {
+                    const meetingLink = document.getElementById('meeting-link');
+                    meetingLink.href = settings.LINE_MEETING_LINK;
+                    meetingLink.innerHTML = '<i class="fas fa-video"></i> 進入 Line 會議室';
+                    meetingLink.onclick = null; // 移除阻止點擊
+                }
+            } catch (error) {
+                console.error('載入會議連結失敗:', error);
+            }
+        }
+        
+        function maskName(name) {
+            if (!name || name.length <= 2) return name;
+            const firstChar = name.charAt(0);
+            const lastChar = name.charAt(name.length - 1);
+            const middle = '○'.repeat(name.length - 2);
+            return firstChar + middle + lastChar;
+        }
+        
+        function showAlert(message, type) {
+            const alertArea = document.getElementById('alert-area');
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'danger' ? 'fa-exclamation-triangle' : 
+                        type === 'warning' ? 'fa-clock' : 'fa-info-circle';
+            
+            const alertClass = type === 'success' ? 'alert-success' : 
+                            type === 'danger' ? 'alert-danger' : 
+                            type === 'warning' ? 'alert-warning' : 'alert-info';
+            
+            alertArea.innerHTML = `
+                <div class="alert ${alertClass}">
+                    <i class="fas ${icon}"></i>
+                    ${message}
+                </div>
+            `;
+            
+            const clearTime = type === 'success' ? 6000 : 4000;
+            setTimeout(() => {
+                if (alertArea.innerHTML.includes(message)) {
+                    alertArea.innerHTML = '';
+                }
+            }, clearTime);
+        }
+        
+        function showLoading(message) {
+            const alertArea = document.getElementById('alert-area');
+            alertArea.innerHTML = `
+                <div class="alert alert-info">
+                    <i class="fas fa-spinner fa-spin"></i> ${message}
+                </div>
+            `;
+        }
+        
+        function hideLoading() {
+            // 載入狀態會自動被其他內容替換
+        }
+        
+        function toggleTextSize() {
+            isLargeText = !isLargeText;
+            document.body.classList.toggle('large-text', isLargeText);
+            localStorage.setItem('largeText', isLargeText);
+            updateTextSizeToggle(isLargeText);
+            
+            const button = document.getElementById('text-size-toggle');
+            button.classList.add('fade-in');
+            setTimeout(() => button.classList.remove('fade-in'), 300);
+        }
+        
+        function updateTextSizeToggle(isLarge) {
+            const button = document.getElementById('text-size-toggle');
+            if (isLarge) {
+                button.title = '恢復正常字體';
+                button.innerHTML = '<i class="fas fa-text-width"></i>';
+            } else {
+                button.title = '調整為大字體';
+                button.innerHTML = '<i class="fas fa-text-height"></i>';
+            }
+        }
+    </script>
+</body>
+</html>
