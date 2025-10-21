@@ -585,6 +585,86 @@
         .small-text .footer p {
             font-size: 1rem;
         }
+        
+        /* 横幅图片 */
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(rgba(139, 69, 19, 0.7), rgba(210, 105, 30, 0.7)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400"><rect width="1200" height="400" fill="%238B4513"/><text x="50%" y="50%" font-family="Arial" font-size="60" fill="white" text-anchor="middle" dominant-baseline="middle">三芝海天宫 - 五年千岁巡灯名册</text></svg>') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        
+        .banner-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-content p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 加载指示器 */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #8B4513;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 嵌入应用样式 */
+        .embedded-app {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 如果嵌入应用出现问题时的备用样式 */
+        .app-fallback {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .app-fallback h3 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .app-fallback p {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
     </style>
 </head>
 <body>
@@ -615,6 +695,14 @@
         
         <!-- 主内容区域 -->
         <main class="main-content">
+            <!-- 横幅 -->
+            <div class="banner">
+                <div class="banner-content">
+                    <h2>五年千岁巡灯名册解惑报名</h2>
+                    <p>在线报名参与五年千岁巡安灯赐福，获得神明指引与保佑</p>
+                </div>
+            </div>
+            
             <!-- 应用容器 -->
             <div class="app-container">
                 <div class="app-header">
@@ -622,82 +710,35 @@
                     <p>解惑线上报名服务</p>
                 </div>
                 
-                <div class="content">
-                    <div id="application-form">
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-user"></i> 真实姓名(限本人)
-                            </label>
-                            <input type="text" id="client-name" class="form-input" placeholder="请输入您的真实姓名" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-lightbulb"></i> 今日解惑灯名
-                            </label>
-                            <div id="light-type-display" class="light-type-display">
-                                <i class="fas fa-spinner fa-spin"></i> 载入中...
-                            </div>
-                        </div>
-                        
-                        <div class="notes-section">
-                            <div class="notes-title">
-                                <i class="fas fa-sticky-note"></i> 注意事项 (可复选)
-                            </div>
-                            <div class="notes-tags" id="notes-tags">
-                                <div class="note-tag" data-value="身体">身体</div>
-                                <div class="note-tag" data-value="睡眠">睡眠</div>
-                                <div class="note-tag" data-value="外出">外出</div>
-                                <div class="note-tag" data-value="水边">水边</div>
-                                <div class="note-tag" data-value="其他">其他</div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="btn btn-primary" id="submit-btn">
-                                <i class="fas fa-paper-plane"></i> 提交报名
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="alert-area"></div>
-                    
-                    <div class="waiting-area" id="waiting-area">
-                        <div class="queue-info">
-                            <h3><i class="fas fa-list-ol"></i> 您的申请状态</h3>
-                            <div class="queue-number" id="queue-number">-</div>
-                            <div class="status-badge" id="status-badge">审核中</div>
-                            <div id="current-position-info" style="margin-top: 20px; color: #666; font-size: 1.3rem;"></div>
-                        </div>
-                        
-                        <a id="meeting-link" class="meeting-link disabled" target="_blank">
-                            <i class="fas fa-video"></i> 进入 Line 会议室
+                <!-- 加载指示器 -->
+                <div class="loading-container" id="loading-indicator">
+                    <div class="loading-spinner"></div>
+                </div>
+                
+                <!-- 嵌入应用 -->
+                <iframe 
+                    class="embedded-app" 
+                    id="embedded-app"
+                    src="https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client"
+                    onload="hideLoading()"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen>
+                </iframe>
+                
+                <!-- 备用应用界面 -->
+                <div class="app-fallback" id="app-fallback">
+                    <h3>应用加载失败</h3>
+                    <p>抱歉，无法加载报名应用。请检查您的网络连接或稍后再试。</p>
+                    <button class="btn btn-primary" onclick="retryLoadApp()">
+                        <i class="fas fa-redo"></i> 重新加载
+                    </button>
+                    <div style="margin-top: 20px;">
+                        <p>或者，您可以直接访问：</p>
+                        <a href="https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client" 
+                           target="_blank" 
+                           class="btn btn-secondary">
+                            <i class="fas fa-external-link-alt"></i> 直接访问报名页面
                         </a>
-                        
-                        <div class="cancel-section" id="cancel-section" style="display: none; margin-top: 25px;">
-                            <button class="btn btn-danger" id="cancel-btn">
-                                <i class="fas fa-times-circle"></i> 取消报名
-                            </button>
-                        </div>
-                        
-                        <div id="queue-list-container" style="display: none; margin-top: 25px;">
-                            <h4><i class="fas fa-users"></i> 等待名单</h4>
-                            <div class="queue-list" id="queue-list">
-                                <div id="queue-list-content">
-                                    <!-- 等待名单将动态生成 -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="retry-section" id="retry-section" style="display: none; margin-top: 25px;">
-                            <button class="btn btn-warning" id="retry-btn">
-                                <i class="fas fa-redo"></i> 重新报名
-                            </button>
-                        </div>
-                        
-                        <div class="auto-refresh-info" id="auto-refresh-info" style="text-align: center; color: #666; font-size: 1.1rem; margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
-                            <i class="fas fa-sync-alt"></i> 状态自动更新中...
-                        </div>
                     </div>
                 </div>
             </div>
@@ -719,56 +760,13 @@
         <i class="fas fa-text-height"></i>
     </button>
 
-    <!-- 自定义确认对话框 -->
-    <div id="custom-confirm" class="custom-confirm" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
-        <div class="confirm-content" style="background: white; border-radius: 15px; padding: 30px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-            <div class="confirm-message" id="confirm-message" style="font-size: 1.5rem; margin-bottom: 30px; color: #333; line-height: 1.6;">确定要取消报名吗？取消后将无法恢复您的排队位置。</div>
-            <div class="confirm-buttons" style="display: flex; gap: 15px; justify-content: center;">
-                <button class="confirm-btn cancel" id="confirm-cancel" style="padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.3rem; cursor: pointer; min-width: 120px; transition: all 0.15s; background: #6c757d; color: white;">取消</button>
-                <button class="confirm-btn confirm" id="confirm-ok" style="padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.3rem; cursor: pointer; min-width: 120px; transition: all 0.15s; background: #e74c3c; color: white;">确定</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 隐藏的音频元素用于播放通知声音 -->
-    <audio id="notification-sound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==" type="audio/wav">
-    </audio>
-
     <script>
         // 初始化变量
-        let currentClient = null;
-        let refreshInterval = null;
-        let hasMeetingEnded = false;
-        let selectedNotes = [];
         let isLargeText = true; // 默认使用大字体
-        let pendingConfirmCallback = null;
-        let notificationCheckInterval = null;
-        let lastKnownStatus = '';
-        let lastKnownQueueNum = 0;
-        let isNotificationSupported = false;
-        let notificationPermission = 'default';
-        let titleBlinkInterval = null;
-        let originalTitle = '';
-        
-        // 检查浏览器通知支持
-        function checkNotificationSupport() {
-            isNotificationSupported = 'Notification' in window;
-            if (isNotificationSupported) {
-                notificationPermission = Notification.permission;
-            }
-            return isNotificationSupported;
-        }
+        let appLoadTimeout = null;
         
         document.addEventListener('DOMContentLoaded', function() {
-            // 检测是否在iframe中运行（Google Sites嵌入）
-            if (window.self !== window.top) {
-                document.body.classList.add('embedded');
-            }
-            
-            // 检查通知支持
-            checkNotificationSupport();
-            
+            // 初始化应用
             initializeApp();
         });
         
@@ -780,343 +778,24 @@
             }
             
             setupEventListeners();
-            loadSettings();
             
-            // 从本地储存恢复客户资料
-            const storedClient = localStorage.getItem('clientData');
-            if (storedClient) {
-                try {
-                    const clientData = JSON.parse(storedClient);
-                    const clientName = document.getElementById('client-name');
-                    
-                    if (clientData.name) {
-                        clientName.value = clientData.name;
-                    }
-                    
-                    // 如果有未完成的申请，直接显示等待状态
-                    if (clientData.clientId && clientData.status &&
-                        clientData.status !== '结束' && clientData.status !== '未通过' && clientData.status !== '已取消') {
-                        currentClient = clientData;
-                        showWaitingState(clientData);
-                        startStatusRefresh();
-                        startNotificationCheck();
-                    }
-                } catch (e) {
-                    console.error('恢复客户资料失败:', e);
-                    localStorage.removeItem('clientData');
-                }
-            }
-
-            // 设置页面可见性监听
-            setupPageVisibilityListener();
-            
-            // 请求通知权限
-            requestNotificationPermission();
-        }
-
-        // 新增：请求通知权限
-        function requestNotificationPermission() {
-            if (!isNotificationSupported) return;
-            
-            if (notificationPermission === 'default') {
-                // 在用户互动后请求权限
-                document.getElementById('submit-btn').addEventListener('click', function() {
-                    if (notificationPermission === 'default') {
-                        Notification.requestPermission().then(function(permission) {
-                            notificationPermission = permission;
-                            if (permission === 'granted') {
-                                console.log('通知权限已授予');
-                            }
-                        });
-                    }
-                }, { once: true });
-            }
-        }
-
-        // 新增：页面可见性监听
-        function setupPageVisibilityListener() {
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden && currentClient && currentClient.clientId) {
-                    // 页面重新可见时，立即检查状态
-                    loadWaitingQueue();
-                    // 停止标题闪烁
-                    stopTitleBlink();
-                }
-            });
+            // 设置应用加载超时检查
+            appLoadTimeout = setTimeout(showAppFallback, 10000); // 10秒后显示备用界面
         }
         
         function setupEventListeners() {
-            document.getElementById('submit-btn').addEventListener('click', submitApplication);
             document.getElementById('text-size-toggle').addEventListener('click', toggleTextSize);
-            document.getElementById('retry-btn').addEventListener('click', retryApplication);
-            document.getElementById('cancel-btn').addEventListener('click', showCancelConfirm);
             
-            // 自定义确认对话框事件
-            document.getElementById('confirm-cancel').addEventListener('click', hideConfirmDialog);
-            document.getElementById('confirm-ok').addEventListener('click', function() {
-                if (pendingConfirmCallback) {
-                    pendingConfirmCallback();
-                }
-                hideConfirmDialog();
+            // 监听嵌入应用加载完成
+            document.getElementById('embedded-app').addEventListener('load', function() {
+                clearTimeout(appLoadTimeout);
+                hideLoading();
             });
             
-            document.getElementById('client-name').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') submitApplication();
+            // 监听嵌入应用加载错误
+            document.getElementById('embedded-app').addEventListener('error', function() {
+                showAppFallback();
             });
-            
-            // 注意事项标签点击事件
-            document.querySelectorAll('.note-tag').forEach(tag => {
-                tag.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const value = this.dataset.value;
-                    
-                    if (this.classList.contains('active')) {
-                        if (!selectedNotes.includes(value)) {
-                            selectedNotes.push(value);
-                        }
-                    } else {
-                        const index = selectedNotes.indexOf(value);
-                        if (index > -1) {
-                            selectedNotes.splice(index, 1);
-                        }
-                    }
-                });
-            });
-        }
-
-        // 新增：检查客户状态
-        function checkClientStatusOnLoad() {
-            const storedClient = localStorage.getItem('clientData');
-            if (storedClient) {
-                const clientData = JSON.parse(storedClient);
-                if (clientData.clientId) {
-                    google.script.run
-                        .withSuccessHandler(result => {
-                            if (result.exists) {
-                                currentClient = {
-                                    name: result.client.name,
-                                    clientId: result.client.clientId,
-                                    status: result.client.status,
-                                    lightType: result.client.lightType
-                                };
-                                showWaitingState(currentClient);
-                                startStatusRefresh();
-                                startNotificationCheck();
-                            }
-                        })
-                        .withFailureHandler(error => {
-                            console.error('检查客户状态失败:', error);
-                        })
-                        .checkClientStatus(clientData.clientId);
-                }
-            }
-        }
-
-        // 新增：通知检查
-        function startNotificationCheck() {
-            if (notificationCheckInterval) {
-                clearInterval(notificationCheckInterval);
-            }
-            notificationCheckInterval = setInterval(() => {
-                if (document.hidden && currentClient && currentClient.clientId) {
-                    // 页面不可见时，检查状态变化
-                    loadWaitingQueueForNotification();
-                }
-            }, 10000); // 每10秒检查一次
-        }
-
-        function loadWaitingQueueForNotification() {
-            if (!currentClient) return;
-            
-            google.script.run
-                .withSuccessHandler(data => {
-                    if (data.client) {
-                        checkForStatusChange(data.client);
-                    }
-                })
-                .getWaitingList(currentClient.name, currentClient.clientId);
-        }
-
-        function checkForStatusChange(client) {
-            const statusChanged = lastKnownStatus !== client.status;
-            const queueChanged = lastKnownQueueNum !== (client.queue_num || 0);
-            
-            if (statusChanged || queueChanged) {
-                // 如果状态变为服务中，触发强力通知
-                if (client.status === '服务中' && lastKnownStatus !== '服务中') {
-                    triggerPowerfulNotification(client);
-                } else if (queueChanged) {
-                    // 队列位置变化时发送一般通知
-                    showBrowserNotification(client);
-                }
-                
-                lastKnownStatus = client.status;
-                lastKnownQueueNum = client.queue_num || 0;
-            }
-        }
-
-        // 新增：强力通知系统
-        function triggerPowerfulNotification(client) {
-            // 1. 浏览器通知
-            showBrowserNotification(client, true);
-            
-            // 2. 页面标题闪烁
-            startTitleBlink();
-            
-            // 3. 播放通知声音
-            playNotificationSound();
-            
-            // 4. 震动（如果支持）
-            if ('vibrate' in navigator) {
-                navigator.vibrate([200, 100, 200]);
-            }
-            
-            // 5. 显示页面内通知
-            showInPageNotification('轮到您了！请准备进入会议室');
-        }
-
-        function showBrowserNotification(client, isUrgent = false) {
-            if (!isNotificationSupported || notificationPermission !== 'granted') {
-                return;
-            }
-
-            let title = '海天宫巡灯系统';
-            let body = '';
-            let options = {
-                icon: 'https://cdn.jsdelivr.net/gh/feathericons/feather@master/icons/bell.svg',
-                badge: 'https://cdn.jsdelivr.net/gh/feathericons/feather@master/icons/check-circle.svg',
-                tag: 'haitian-temple-notification'
-            };
-            
-            if (client.status === '服务中') {
-                title = '🚨 轮到您了！';
-                body = '请立即进入会议室进行解惑';
-                options.requireInteraction = true;
-                options.actions = [
-                    {
-                        action: 'join',
-                        title: '进入会议室'
-                    }
-                ];
-            } else if (client.status === '等待中') {
-                if (client.queue_num === 1) {
-                    title = '⚠️ 即将轮到您';
-                    body = '您是当前第一位，请准备';
-                } else if (client.queue_num <= 3) {
-                    title = '⏰ 即将轮到您';
-                    body = `您前面还有 ${client.queue_num - 1} 位等待者`;
-                } else {
-                    title = '📋 排队状态更新';
-                    body = `您的排队号码: ${client.queue_num}`;
-                }
-            }
-
-            const notification = new Notification(title, options);
-
-            notification.onclick = function() {
-                window.focus();
-                notification.close();
-                if (client.status === '服务中') {
-                    loadMeetingLink();
-                }
-            };
-
-            // 如果是服务中通知，设置更长的显示时间
-            const timeout = client.status === '服务中' ? 15000 : 5000;
-            setTimeout(notification.close.bind(notification), timeout);
-        }
-
-        // 新增：页面标题闪烁
-        function startTitleBlink() {
-            if (titleBlinkInterval) return;
-            
-            originalTitle = document.title;
-            let blinkState = true;
-            
-            titleBlinkInterval = setInterval(() => {
-                if (blinkState) {
-                    document.title = '🚨 轮到您了！请进入会议室 - ' + originalTitle;
-                } else {
-                    document.title = originalTitle;
-                }
-                blinkState = !blinkState;
-            }, 1000);
-        }
-
-        function stopTitleBlink() {
-            if (titleBlinkInterval) {
-                clearInterval(titleBlinkInterval);
-                titleBlinkInterval = null;
-                document.title = originalTitle;
-            }
-        }
-
-        // 新增：播放通知声音
-        function playNotificationSound() {
-            const audio = document.getElementById('notification-sound');
-            if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => {
-                    console.log('无法播放通知声音:', e);
-                    // 使用 Web Audio API 作为备用方案
-                    playFallbackSound();
-                });
-            } else {
-                playFallbackSound();
-            }
-        }
-
-        function playFallbackSound() {
-            if (!window.AudioContext && !window.webkitAudioContext) return;
-            
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
-            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-        }
-
-        // 新增：页面内通知
-        function showInPageNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification-toast';
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <i class="fas fa-bell" style="color: #FFD700;"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 5000);
-        }
-
-        // 自定义确认对话框函数
-        function showConfirmDialog(message, callback) {
-            document.getElementById('confirm-message').textContent = message;
-            document.getElementById('custom-confirm').style.display = 'flex';
-            pendingConfirmCallback = callback;
-        }
-
-        function hideConfirmDialog() {
-            document.getElementById('custom-confirm').style.display = 'none';
-            pendingConfirmCallback = null;
         }
         
         function toggleTextSize() {
@@ -1137,552 +816,42 @@
             }
         }
         
-        function loadSettings() {
-            showLoading('载入系统设定中...');
-            
-            google.script.run
-                .withSuccessHandler(settings => {
-                    const lightDisplay = document.getElementById('light-type-display');
-                    const lightType = settings.TODAY_LIGHT || '光明灯';
-                    
-                    lightDisplay.innerHTML = `
-                        <i class="fas fa-lightbulb"></i> ${lightType}
-                        <div style="font-size: 1.1rem; color: #666; margin-top: 10px;">
-                        自动审核中
-                        </div>
-                    `;
-                    
-                    hideLoading();
-                })
-                .withFailureHandler(error => {
-                    const lightDisplay = document.getElementById('light-type-display');
-                    lightDisplay.innerHTML = `
-                        <i class="fas fa-lightbulb"></i> 光明灯
-                        <div style="font-size: 1.1rem; color: #666; margin-top: 10px;">
-                        自动审核中
-                        </div>
-                    `;
-                    hideLoading();
-                })
-                .getMeetingSettings();
-        }
-        
-        function submitApplication() {
-            const name = document.getElementById('client-name').value.trim();
-            
-            if (!name) {
-                showAlert('请填写真实姓名', 'danger');
-                document.getElementById('client-name').focus();
-                return;
-            }
-            
-            if (selectedNotes.length === 0) {
-                showAlert('请至少选择一项注意事项', 'danger');
-                return;
-            }
-            
-            showLoading('提交申请中...');
-            
-            const clientData = {
-                name: name,
-                notes: selectedNotes,
-                clientId: currentClient ? currentClient.clientId : null
-            };
-            
-            google.script.run
-                .withSuccessHandler(result => {
-                    if (result.error) {
-                        showAlert(result.error, 'danger');
-                    } else if (result.existing) {
-                        // 恢复现有申请
-                        currentClient = { name: name, ...result };
-                        showWaitingState(result);
-                        startStatusRefresh();
-                        startNotificationCheck();
-                        showAlert('已恢复您的申请状态', 'info');
-                    } else {
-                        currentClient = { name: name, ...result };
-                        
-                        // 储存客户资料到本地
-                        const clientDataToStore = {
-                            name: name,
-                            clientId: result.clientId,
-                            status: result.status,
-                            lightType: result.lightType,
-                            timestamp: new Date().getTime()
-                        };
-                        localStorage.setItem('clientData', JSON.stringify(clientDataToStore));
-                        
-                        showApplicationResult(result);
-                        startStatusRefresh();
-                        startNotificationCheck();
-                    }
-                    hideLoading();
-                })
-                .withFailureHandler(error => {
-                    console.error('提交失败:', error);
-                    showAlert('提交失败: ' + error.message, 'danger');
-                    hideLoading();
-                })
-                .submitApplication(clientData);
-        }
-        
-        function showApplicationResult(result) {
-            document.getElementById('application-form').style.display = 'none';
-            document.getElementById('waiting-area').style.display = 'block';
-            
-            updateClientStatusDisplay(result);
-            showAlert(result.message, result.status === '等待中' ? 'success' : 'warning');
-        }
-        
-        function showWaitingState(result) {
-            document.getElementById('application-form').style.display = 'none';
-            document.getElementById('waiting-area').style.display = 'block';
-            updateClientStatusDisplay(result);
-        }
-        
-        function updateClientStatusDisplay(result) {
-            const statusBadge = document.getElementById('status-badge');
-            statusBadge.textContent = result.status;
-            statusBadge.className = 'status-badge ' + getStatusClass(result.status);
-            
-            const positionInfo = document.getElementById('current-position-info');
-            const meetingLink = document.getElementById('meeting-link');
-            const queueListContainer = document.getElementById('queue-list-container');
-            const refreshInfo = document.getElementById('auto-refresh-info');
-            const retrySection = document.getElementById('retry-section');
-            const cancelSection = document.getElementById('cancel-section');
-            
-            // 隐藏重新报名和取消按钮（默认）
-            retrySection.style.display = 'none';
-            cancelSection.style.display = 'none';
-            
-            if (result.status === '等待中') {
-                const queueNum = result.queue_num || '-';
-                if (queueNum === 1) {
-                    positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 您是第一位，请准备进入会议室';
-                    positionInfo.style.color = '#228B22';
-                } else if (queueNum > 1) {
-                    positionInfo.innerHTML = `<i class="fas fa-clock"></i> 您前面还有 ${queueNum - 1} 位等待者`;
-                    positionInfo.style.color = '#FF8C00';
-                } else {
-                    positionInfo.innerHTML = '<i class="fas fa-clock"></i> 请等待管理员安排';
-                    positionInfo.style.color = '#FF8C00';
-                }
-                document.getElementById('queue-number').textContent = queueNum;
-                meetingLink.style.display = 'none';
-                meetingLink.classList.add('disabled');
-                meetingLink.classList.remove('pulse', 'active');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'block';
-                refreshInfo.style.display = 'block';
-                cancelSection.style.display = 'block';
-            } else if (result.status === '服务中') {
-                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 请准备进入会议室';
-                positionInfo.style.color = '#228B22';
-                document.getElementById('queue-number').textContent = result.queue_num || '服务中';
-                
-                // 重要修改：立即加载会议链接
-                loadMeetingLink();
-                meetingLink.style.display = 'block';
-                meetingLink.classList.remove('disabled');
-                meetingLink.classList.add('active', 'pulse');
-                queueListContainer.style.display = 'block';
-                refreshInfo.style.display = 'block';
-                
-                // 触发强力通知
-                triggerPowerfulNotification(result);
-            } else if (result.status === '结束') {
-                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 服务已结束，感谢您！';
-                positionInfo.style.color = '#6c757d';
-                document.getElementById('queue-number').textContent = '已结束';
-                meetingLink.style.display = 'block';
-                meetingLink.classList.add('disabled');
-                meetingLink.classList.remove('active', 'pulse');
-                meetingLink.innerHTML = '<i class="fas fa-video-slash"></i> 服务已结束';
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                hasMeetingEnded = true;
-                stopStatusRefresh();
-                stopNotificationCheck();
-                stopTitleBlink();
-                
-                // 清除本地储存
-                localStorage.removeItem('clientData');
-            } else if (result.status === '未通过') {
-                positionInfo.innerHTML = `<i class="fas fa-times-circle"></i> ${result.message || '审核未通过'}`;
-                positionInfo.style.color = '#e74c3c';
-                document.getElementById('queue-number').textContent = '未通过';
-                meetingLink.style.display = 'none';
-                meetingLink.classList.remove('pulse');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                stopNotificationCheck();
-                stopTitleBlink();
-                
-                // 显示重新报名按钮
-                retrySection.style.display = 'block';
-                stopStatusRefresh();
-            } else if (result.status === '已取消') {
-                positionInfo.innerHTML = '<i class="fas fa-times-circle"></i> 报名已取消';
-                positionInfo.style.color = '#6c757d';
-                document.getElementById('queue-number').textContent = '已取消';
-                meetingLink.style.display = 'none';
-                meetingLink.classList.remove('pulse');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                stopNotificationCheck();
-                stopTitleBlink();
-                
-                // 显示重新报名按钮
-                retrySection.style.display = 'block';
-                stopStatusRefresh();
-            }
-        }
-
-        function showCancelConfirm() {
-            if (!currentClient || !currentClient.clientId) {
-                showAlert('无法取消报名，请重新整理页面后再试', 'danger');
-                return;
-            }
-            
-            showConfirmDialog('确定要取消报名吗？取消后将无法恢复您的排队位置。', cancelApplication);
-        }
-        
-        function cancelApplication() {
-            showLoading('取消报名中...');
-            
-            google.script.run
-                .withSuccessHandler(result => {
-                    if (result.error) {
-                        showAlert('取消报名失败: ' + result.error, 'danger');
-                    } else {
-                        showAlert(result.message, 'success');
-                        stopStatusRefresh();
-                        stopNotificationCheck();
-                        stopTitleBlink();
-                        localStorage.removeItem('clientData');
-                        
-                        // 更新显示状态
-                        document.getElementById('status-badge').textContent = '已取消';
-                        document.getElementById('status-badge').className = 'status-badge status-cancelled';
-                        document.getElementById('current-position-info').innerHTML = '<i class="fas fa-times-circle"></i> 报名已取消';
-                        document.getElementById('current-position-info').style.color = '#6c757d';
-                        document.getElementById('queue-number').textContent = '已取消';
-                        document.getElementById('queue-list-container').style.display = 'none';
-                        document.getElementById('auto-refresh-info').style.display = 'none';
-                        document.getElementById('cancel-section').style.display = 'none';
-                        document.getElementById('retry-section').style.display = 'block';
-                    }
-                    hideLoading();
-                })
-                .withFailureHandler(error => {
-                    console.error('取消报名失败:', error);
-                    showAlert('取消报名失败: ' + error.message, 'danger');
-                    hideLoading();
-                })
-                .cancelApplication(currentClient.clientId);
-        }
-        
-        function retryApplication() {
-            // 清除本地储存和当前客户资料
-            localStorage.removeItem('clientData');
-            currentClient = null;
-            selectedNotes = [];
-            
-            // 重置表单
-            document.getElementById('client-name').value = '';
-            document.querySelectorAll('.note-tag').forEach(tag => {
-                tag.classList.remove('active');
-            });
-            
-            // 显示申请表单
-            document.getElementById('waiting-area').style.display = 'none';
-            document.getElementById('application-form').style.display = 'block';
-            document.getElementById('alert-area').innerHTML = '';
-            
-            // 聚焦到姓名输入框
-            document.getElementById('client-name').focus();
-        }
-        
-        function startStatusRefresh() {
-            if (!currentClient) return;
-            
-            loadWaitingQueue();
-            if (!refreshInterval) {
-                refreshInterval = setInterval(loadWaitingQueue, 3000);
-            }
-        }
-        
-        function stopStatusRefresh() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-                refreshInterval = null;
-            }
-        }
-
-        function stopNotificationCheck() {
-            if (notificationCheckInterval) {
-                clearInterval(notificationCheckInterval);
-                notificationCheckInterval = null;
-            }
-        }
-        
-        function loadWaitingQueue() {
-            if (!currentClient) return;
-            
-            google.script.run
-                .withSuccessHandler(data => {
-                    displayQueue(data);
-                    
-                    if (data.client) {
-                        // 更新客户状态
-                        const updatedClient = {
-                            ...currentClient,
-                            status: data.client.status,
-                            queue_num: data.client.queue_num
-                        };
-                        
-                        // 更新本地储存
-                        const clientDataToStore = {
-                            name: updatedClient.name,
-                            clientId: updatedClient.clientId,
-                            status: updatedClient.status,
-                            lightType: updatedClient.lightType,
-                            timestamp: new Date().getTime()
-                        };
-                        localStorage.setItem('clientData', JSON.stringify(clientDataToStore));
-                        
-                        updateClientStatusFromQueue(data.client, data.list);
-                    } else {
-                        // 如果找不到客户资料，显示未报名状态
-                        document.getElementById('application-form').style.display = 'block';
-                        document.getElementById('waiting-area').style.display = 'none';
-                        showAlert('找不到您的报名资料，请重新报名', 'warning');
-                        stopStatusRefresh();
-                        stopNotificationCheck();
-                        stopTitleBlink();
-                        localStorage.removeItem('clientData');
-                    }
-                })
-                .withFailureHandler(error => {
-                    console.error('载入队列失败:', error);
-                    displayQueue({ list: [] });
-                })
-                .getWaitingList(currentClient.name, currentClient.clientId);
-        }
-        
-        function displayQueue(data) {
-            const queueListContent = document.getElementById('queue-list-content');
-            const list = data.list || [];
-            const queueListContainer = document.getElementById('queue-list-container');
-            
-            if (list.length > 0) {
-                queueListContainer.style.display = 'block';
-                
-                let html = '';
-                
-                list.forEach(item => {
-                    const statusClass = getStatusClass(item.status);
-                    const isCurrentUser = currentClient && item.is_client;
-                    
-                    const itemClass = isCurrentUser ? 'queue-item current-user' : 'queue-item';
-                    
-                    html += `
-                        <div class="${itemClass}" style="display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 2px solid #eee; background: #f9f9f9; margin-bottom: 12px; border-radius: 10px; font-size: 1.3rem;">
-                            <div>
-                                <strong>${item.queue_num || ''}号</strong> - ${item.display_name || '未知'}
-                                ${isCurrentUser ? '<span style="color: #FF8C00; margin-left: 10px; font-weight: 600;">(您)</span>' : ''}
-                            </div>
-                            <div class="status-badge ${statusClass}">${item.status || '未知'}</div>
-                        </div>
-                    `;
-                });
-                
-                queueListContent.innerHTML = html;
-            } else {
-                queueListContainer.style.display = 'none';
-                queueListContent.innerHTML = '<p style="text-align: center; padding: 20px; font-size: 1.3rem;">目前没有等待中的客户</p>';
-            }
-        }
-        
-        function updateClientStatusFromQueue(client, list) {
-            document.getElementById('application-form').style.display = 'none';
-            document.getElementById('waiting-area').style.display = 'block';
-            
-            if (client.queue_num) {
-                document.getElementById('queue-number').textContent = client.queue_num;
-            } else {
-                document.getElementById('queue-number').textContent = '-';
-            }
-            
-            const statusBadge = document.getElementById('status-badge');
-            statusBadge.textContent = client.status;
-            statusBadge.className = 'status-badge ' + getStatusClass(client.status);
-            
-            const positionInfo = document.getElementById('current-position-info');
-            const meetingLink = document.getElementById('meeting-link');
-            const queueListContainer = document.getElementById('queue-list-container');
-            const refreshInfo = document.getElementById('auto-refresh-info');
-            const retrySection = document.getElementById('retry-section');
-            const cancelSection = document.getElementById('cancel-section');
-            
-            retrySection.style.display = 'none';
-            cancelSection.style.display = 'none';
-            
-            if (client.status === '等待中') {
-                const queueNum = client.queue_num;
-                if (queueNum === 1) {
-                    positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 您是第一位，请准备进入会议室';
-                    positionInfo.style.color = '#228B22';
-                } else if (queueNum > 1) {
-                    positionInfo.innerHTML = `<i class="fas fa-clock"></i> 您前面还有 ${queueNum - 1} 位等待者`;
-                    positionInfo.style.color = '#FF8C00';
-                } else {
-                    positionInfo.innerHTML = '<i class="fas fa-clock"></i> 请等待管理员安排';
-                    positionInfo.style.color = '#FF8C00';
-                }
-                meetingLink.style.display = 'none';
-                meetingLink.classList.add('disabled');
-                meetingLink.classList.remove('active', 'pulse');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'block';
-                refreshInfo.style.display = 'block';
-                cancelSection.style.display = 'block';
-            } else if (client.status === '服务中') {
-                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 请准备进入会议室';
-                positionInfo.style.color = '#228B22';
-                
-                // 重要修改：立即加载会议链接
-                loadMeetingLink();
-                meetingLink.style.display = 'block';
-                meetingLink.classList.remove('disabled');
-                meetingLink.classList.add('active', 'pulse');
-                queueListContainer.style.display = 'block';
-                refreshInfo.style.display = 'block';
-                
-                // 检查是否需要触发通知
-                if (lastKnownStatus !== '服务中') {
-                    triggerPowerfulNotification(client);
-                }
-            } else if (client.status === '结束') {
-                positionInfo.innerHTML = '<i class="fas fa-check-circle"></i> 服务已结束，感谢您！';
-                positionInfo.style.color = '#6c757d';
-                meetingLink.style.display = 'block';
-                meetingLink.classList.add('disabled');
-                meetingLink.classList.remove('active', 'pulse');
-                meetingLink.innerHTML = '<i class="fas fa-video-slash"></i> 服务已结束';
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                hasMeetingEnded = true;
-                stopStatusRefresh();
-                stopNotificationCheck();
-                stopTitleBlink();
-                localStorage.removeItem('clientData');
-            } else if (client.status === '未通过') {
-                positionInfo.innerHTML = '<i class="fas fa-times-circle"></i> 审核未通过';
-                positionInfo.style.color = '#e74c3c';
-                meetingLink.style.display = 'none';
-                meetingLink.classList.remove('pulse');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                retrySection.style.display = 'block';
-                stopStatusRefresh();
-                stopNotificationCheck();
-                stopTitleBlink();
-            } else if (client.status === '已取消') {
-                positionInfo.innerHTML = '<i class="fas fa-times-circle"></i> 报名已取消';
-                positionInfo.style.color = '#6c757d';
-                meetingLink.style.display = 'none';
-                meetingLink.classList.remove('pulse');
-                meetingLink.removeAttribute('href');
-                queueListContainer.style.display = 'none';
-                refreshInfo.style.display = 'none';
-                retrySection.style.display = 'block';
-                stopStatusRefresh();
-                stopNotificationCheck();
-                stopTitleBlink();
-            }
-            
-            // 更新最后已知状态
-            lastKnownStatus = client.status;
-            lastKnownQueueNum = client.queue_num || 0;
-        }
-        
-        // 重要修改：简化会议链接加载
-        function loadMeetingLink() {
-            google.script.run
-                .withSuccessHandler(settings => {
-                    if (settings && settings.LINE_MEETING_LINK) {
-                        const meetingLink = document.getElementById('meeting-link');
-                        // 直接设置href属性，让浏览器自然处理
-                        meetingLink.href = settings.LINE_MEETING_LINK;
-                        meetingLink.innerHTML = '<i class="fas fa-video"></i> 进入 Line 会议室';
-                    } else {
-                        showAlert('会议室链接尚未设定，请联系管理员', 'warning');
-                    }
-                })
-                .withFailureHandler(error => {
-                    console.error('载入会议链接失败:', error);
-                    showAlert('载入会议室链接失败，请稍后再试', 'danger');
-                })
-                .getMeetingSettings();
-        }
-        
-        function getStatusClass(status) {
-            switch(status) {
-                case '审核中': return 'status-pending';
-                case '等待中': return 'status-waiting';
-                case '服务中': return 'status-serving';
-                case '结束': return 'status-completed';
-                case '未通过': return 'status-rejected';
-                case '已取消': return 'status-cancelled';
-                default: return 'status-pending';
-            }
-        }
-        
-        function showAlert(message, type) {
-            const alertArea = document.getElementById('alert-area');
-            const icon = type === 'success' ? 'fa-check-circle' :
-                        type === 'danger' ? 'fa-exclamation-triangle' :
-                        type === 'warning' ? 'fa-clock' : 'fa-info-circle';
-            
-            const alertClass = type === 'success' ? 'alert-success' :
-                              type === 'danger' ? 'alert-danger' :
-                              type === 'warning' ? 'alert-warning' : 'alert-info';
-            
-            alertArea.innerHTML = `
-                <div class="alert ${alertClass}" style="padding: 18px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-size: 1.4rem; min-height: 65px; display: flex; align-items: center; justify-content: center; background: ${type === 'success' ? '#d4edda' : type === 'danger' ? '#f8d7da' : type === 'warning' ? '#fff3cd' : '#d1ecf1'}; color: ${type === 'success' ? '#155724' : type === 'danger' ? '#721c24' : type === 'warning' ? '#856404' : '#0c5460'}; border: 2px solid ${type === 'success' ? '#c3e6cb' : type === 'danger' ? '#f5c6cb' : type === 'warning' ? '#ffeaa7' : '#bee5eb'};">
-                    <i class="fas ${icon}"></i>
-                    ${message}
-                </div>
-            `;
-            
-            const clearTime = type === 'success' ? 5000 : 3000;
-            setTimeout(() => {
-                if (alertArea.innerHTML.includes(message)) {
-                    alertArea.innerHTML = '';
-                }
-            }, clearTime);
-        }
-        
-        function showLoading(message) {
-            const alertArea = document.getElementById('alert-area');
-            alertArea.innerHTML = `
-                <div class="alert alert-info" style="padding: 18px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-size: 1.4rem; min-height: 65px; display: flex; align-items: center; justify-content: center; background: #d1ecf1; color: #0c5460; border: 2px solid #bee5eb;">
-                    <i class="fas fa-spinner fa-spin"></i> ${message}
-                </div>
-            `;
-        }
-        
         function hideLoading() {
-            // 载入状态会自动被其他内容替换
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('embedded-app').style.display = 'block';
         }
+        
+        function showAppFallback() {
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('embedded-app').style.display = 'none';
+            document.getElementById('app-fallback').style.display = 'block';
+        }
+        
+        function retryLoadApp() {
+            document.getElementById('loading-indicator').style.display = 'flex';
+            document.getElementById('app-fallback').style.display = 'none';
+            document.getElementById('embedded-app').style.display = 'none';
+            
+            // 重新加载嵌入应用
+            const iframe = document.getElementById('embedded-app');
+            iframe.src = iframe.src;
+            
+            // 重新设置超时检查
+            appLoadTimeout = setTimeout(showAppFallback, 10000);
+        }
+        
+        // 页面可见性监听 - 当页面重新可见时检查应用状态
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                // 页面重新可见时，检查嵌入应用是否正常显示
+                const iframe = document.getElementById('embedded-app');
+                if (iframe.style.display === 'none' && document.getElementById('app-fallback').style.display === 'none') {
+                    // 如果两者都不可见，可能是加载问题，尝试重新显示加载指示器
+                    document.getElementById('loading-indicator').style.display = 'flex';
+                    iframe.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>
