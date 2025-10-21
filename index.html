@@ -6,7 +6,6 @@
     <title>三芝海天宮 - 五年千歲巡燈名冊解惑報名</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 重置樣式 */
         * {
             margin: 0;
             padding: 0;
@@ -14,106 +13,78 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* 全域樣式 */
-        html, body {
-            height: 100%;
-            width: 100%;
+        body {
             font-family: 'Microsoft JhengHei', 'PingFang TC', 'Heiti TC', sans-serif;
-            background: #f8f4e9;
+            background: #f5f1e6;
             color: #333;
             line-height: 1.6;
-            font-size: 20px; /* 預設大字體，適合老年人 */
-            overflow: hidden;
+            overflow-x: hidden;
         }
         
-        /* 主容器 */
         .container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
             background: white;
-            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
         }
         
-        /* 頂部LOGO和導航區域 */
         .header {
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            background: linear-gradient(rgba(139, 69, 19, 0.85), rgba(210, 105, 30, 0.85)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300"><rect width="1200" height="300" fill="%238B4513"/></svg>') center/cover;
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             text-align: center;
-            position: relative;
-            z-index: 2;
         }
         
         .logo-section {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
         
-        .logo-img {
-            width: 80px;
-            height: 80px;
+        .logo {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 15px;
+            margin: 0 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             border: 3px solid #FFD700;
         }
         
-        .logo-img i {
-            font-size: 40px;
+        .logo i {
+            font-size: 45px;
             color: #8B4513;
         }
         
-        .temple-title {
-            text-align: center;
-        }
-        
         .temple-title h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 5px;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .temple-title p {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             opacity: 0.9;
         }
         
-        /* 主內容區域 - 滿版嵌入 */
         .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            padding: 0;
             position: relative;
         }
         
-        /* 嵌入應用容器 */
         .embedded-app-container {
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 180px);
             position: relative;
-            overflow: hidden;
         }
         
         .embedded-app {
@@ -123,7 +94,6 @@
             display: block;
         }
         
-        /* 加載指示器 */
         .loading-container {
             display: flex;
             justify-content: center;
@@ -134,7 +104,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(248, 244, 233, 0.9);
+            background: rgba(245, 241, 230, 0.9);
             z-index: 50;
         }
         
@@ -159,7 +129,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* 如果嵌入應用出現問題時的備用樣式 */
         .app-fallback {
             display: none;
             text-align: center;
@@ -188,19 +157,17 @@
             font-size: 1.3rem;
         }
         
-        /* 按鈕樣式 */
         .btn {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.3rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             text-align: center;
-            min-width: 150px;
         }
         
         .btn-primary {
@@ -212,7 +179,6 @@
         .btn-primary:hover {
             background: #1E7A1E;
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(34, 139, 34, 0.4);
         }
         
         .btn-secondary {
@@ -224,137 +190,8 @@
         .btn-secondary:hover {
             background: #B85C14;
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(210, 105, 30, 0.4);
         }
         
-        /* 工具按鈕 */
-        .text-size-toggle {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #8B4513;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            border: 3px solid #FFD700;
-            transition: all 0.3s;
-        }
-        
-        .text-size-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        /* 裝飾元素 */
-        .decoration {
-            position: absolute;
-            opacity: 0.1;
-            z-index: 1;
-        }
-        
-        .decoration-1 {
-            top: 15px;
-            left: 15px;
-            font-size: 80px;
-            color: white;
-        }
-        
-        .decoration-2 {
-            bottom: 15px;
-            right: 15px;
-            font-size: 70px;
-            color: white;
-        }
-        
-        /* 響應式設計 */
-        @media (max-width: 768px) {
-            .logo-section {
-                flex-direction: column;
-            }
-            
-            .logo-img {
-                margin: 5px 0;
-                width: 60px;
-                height: 60px;
-            }
-            
-            .logo-img i {
-                font-size: 30px;
-            }
-            
-            .temple-title h1 {
-                font-size: 1.8rem;
-            }
-            
-            .temple-title p {
-                font-size: 1.1rem;
-            }
-            
-            .header {
-                padding: 10px 15px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .temple-title h1 {
-                font-size: 1.5rem;
-            }
-            
-            .temple-title p {
-                font-size: 1rem;
-            }
-            
-            .btn {
-                padding: 12px 20px;
-                font-size: 1.2rem;
-                min-width: 120px;
-            }
-            
-            .text-size-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-        
-        /* 小字體模式 */
-        .small-text {
-            font-size: 16px !important;
-        }
-        
-        .small-text .temple-title h1 {
-            font-size: 1.8rem;
-        }
-        
-        .small-text .temple-title p {
-            font-size: 1.1rem;
-        }
-        
-        .small-text .btn {
-            font-size: 1.1rem;
-        }
-        
-        .small-text .loading-text {
-            font-size: 1.2rem;
-        }
-        
-        .small-text .app-fallback h3 {
-            font-size: 1.6rem;
-        }
-        
-        .small-text .app-fallback p {
-            font-size: 1.1rem;
-        }
-        
-        /* 通知樣式 */
         .notification {
             position: fixed;
             top: 20px;
@@ -387,68 +224,69 @@
             background: #3498db;
         }
         
-        /* 全屏按鈕 */
-        .fullscreen-toggle {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            background: #8B4513;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            border: 3px solid #FFD700;
-            transition: all 0.3s;
-        }
-        
-        .fullscreen-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        @media (max-width: 768px) {
+            .logo-section {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin: 10px 0;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .logo i {
+                font-size: 35px;
+            }
+            
+            .temple-title h1 {
+                font-size: 2rem;
+            }
+            
+            .temple-title p {
+                font-size: 1.2rem;
+            }
+            
+            .embedded-app-container {
+                height: calc(100vh - 200px);
+            }
         }
         
         @media (max-width: 480px) {
-            .fullscreen-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-                bottom: 20px;
-                left: 20px;
+            .temple-title h1 {
+                font-size: 1.7rem;
+            }
+            
+            .temple-title p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 頂部LOGO和導航 -->
+        <!-- 頂部橫幅和LOGO -->
         <header class="header">
-            <div class="decoration decoration-1">
-                <i class="fas fa-temple-buddhist"></i>
-            </div>
-            <div class="decoration decoration-2">
-                <i class="fas fa-praying-hands"></i>
-            </div>
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo-img">
-                        <i class="fas fa-temple-buddhist"></i>
-                    </div>
-                    <div class="temple-title">
-                        <h1>三芝海天宮</h1>
-                        <p>五年千歲巡安燈賜福</p>
-                    </div>
-                    <div class="logo-img">
-                        <i class="fas fa-praying-hands"></i>
-                    </div>
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-temple-buddhist"></i>
+                </div>
+                <div class="temple-title">
+                    <h1>三芝海天宮</h1>
+                    <p>五年千歲巡安燈賜福</p>
+                </div>
+                <div class="logo">
+                    <i class="fas fa-praying-hands"></i>
                 </div>
             </div>
         </header>
         
-        <!-- 主內容區域 - 滿版嵌入 -->
+        <!-- 主內容區域 -->
         <main class="main-content">
             <!-- 嵌入應用容器 -->
             <div class="embedded-app-container">
@@ -487,50 +325,25 @@
             </div>
         </main>
     </div>
-    
-    <!-- 字體大小切換按鈕 -->
-    <button class="text-size-toggle" id="text-size-toggle" title="調整字體大小">
-        <i class="fas fa-text-height"></i>
-    </button>
-    
-    <!-- 全屏切換按鈕 -->
-    <button class="fullscreen-toggle" id="fullscreen-toggle" title="切換全屏模式">
-        <i class="fas fa-expand"></i>
-    </button>
 
     <script>
-        // 初始化變數
-        let isLargeText = true; // 預設使用大字體
         let appLoadTimeout = null;
-        let isFullscreen = false;
         
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化應用
             initializeApp();
         });
         
         function initializeApp() {
-            // 應用字體設定
-            const savedTextSize = localStorage.getItem('clientLargeText');
-            if (savedTextSize === 'false') {
-                isLargeText = false;
-                document.body.classList.add('small-text');
-                updateTextSizeToggle(false);
-            }
-            
             setupEventListeners();
             
             // 設置應用載入超時檢查
-            appLoadTimeout = setTimeout(showAppFallback, 15000); // 15秒後顯示備用界面
+            appLoadTimeout = setTimeout(showAppFallback, 10000); // 10秒後顯示備用界面
             
             // 顯示載入通知
             showNotification('系統正在初始化，請稍候...', 'info');
         }
         
         function setupEventListeners() {
-            document.getElementById('text-size-toggle').addEventListener('click', toggleTextSize);
-            document.getElementById('fullscreen-toggle').addEventListener('click', toggleFullscreen);
-            
             // 監聽嵌入應用載入完成
             document.getElementById('embedded-app').addEventListener('load', function() {
                 clearTimeout(appLoadTimeout);
@@ -543,86 +356,6 @@
                 showAppFallback();
                 showNotification('應用載入失敗，請檢查網路連線', 'error');
             });
-            
-            // 監聽全屏變化
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
-            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-        }
-        
-        function toggleTextSize() {
-            isLargeText = !isLargeText;
-            document.body.classList.toggle('small-text', !isLargeText);
-            localStorage.setItem('clientLargeText', isLargeText);
-            updateTextSizeToggle(isLargeText);
-            
-            // 顯示通知
-            const message = isLargeText ? '已切換為大字體模式' : '已切換為正常字體模式';
-            showNotification(message, 'info');
-        }
-        
-        function updateTextSizeToggle(isLarge) {
-            const button = document.getElementById('text-size-toggle');
-            if (isLarge) {
-                button.title = '切換為正常字體';
-                button.innerHTML = '<i class="fas fa-text-width"></i>';
-            } else {
-                button.title = '切換為大字體';
-                button.innerHTML = '<i class="fas fa-text-height"></i>';
-            }
-        }
-        
-        function toggleFullscreen() {
-            if (!isFullscreen) {
-                enterFullscreen();
-            } else {
-                exitFullscreen();
-            }
-        }
-        
-        function enterFullscreen() {
-            const element = document.documentElement;
-            
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            }
-        }
-        
-        function exitFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        }
-        
-        function handleFullscreenChange() {
-            isFullscreen = !!(document.fullscreenElement || 
-                             document.webkitFullscreenElement || 
-                             document.mozFullScreenElement ||
-                             document.msFullscreenElement);
-            
-            const fullscreenButton = document.getElementById('fullscreen-toggle');
-            if (isFullscreen) {
-                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
-                fullscreenButton.title = '退出全屏模式';
-                showNotification('已進入全屏模式', 'info');
-            } else {
-                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
-                fullscreenButton.title = '切換全屏模式';
-                showNotification('已退出全屏模式', 'info');
-            }
         }
         
         function hideLoading() {
@@ -643,23 +376,11 @@
             iframe.src = iframe.src;
             
             // 重新設置超時檢查
-            appLoadTimeout = setTimeout(showAppFallback, 15000);
+            appLoadTimeout = setTimeout(showAppFallback, 10000);
             
             // 顯示通知
             showNotification('正在重新載入應用...', 'info');
         }
-        
-        // 頁面可見性監聽 - 當頁面重新可見時檢查應用狀態
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                // 頁面重新可見時，檢查嵌入應用是否正常顯示
-                const iframe = document.getElementById('embedded-app');
-                if (iframe.style.display === 'none' && document.getElementById('app-fallback').style.display === 'none') {
-                    // 如果兩者都不可見，可能是載入問題，嘗試重新顯示載入指示器
-                    document.getElementById('loading-indicator').style.display = 'flex';
-                }
-            }
-        });
         
         // 顯示通知函數
         function showNotification(message, type) {
@@ -688,32 +409,6 @@
                 }
             }, 3000);
         }
-        
-        // 添加鍵盤快捷鍵支持
-        document.addEventListener('keydown', function(e) {
-            // F11 全屏切換
-            if (e.key === 'F11') {
-                e.preventDefault();
-                toggleFullscreen();
-            }
-            
-            // ESC 退出全屏
-            if (e.key === 'Escape' && isFullscreen) {
-                exitFullscreen();
-            }
-            
-            // Ctrl+Shift+F 全屏切換
-            if (e.ctrlKey && e.shiftKey && e.key === 'F') {
-                e.preventDefault();
-                toggleFullscreen();
-            }
-            
-            // Ctrl+Shift+T 字體大小切換
-            if (e.ctrlKey && e.shiftKey && e.key === 'T') {
-                e.preventDefault();
-                toggleTextSize();
-            }
-        });
     </script>
 </body>
 </html>
