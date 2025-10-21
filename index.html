@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三芝海天宫 - 五年千岁巡灯名册解惑报名</title>
+    <title>三芝海天宮 - 五年千歲巡燈名冊解惑報名</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 重置样式 */
+        /* 重置樣式 */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +14,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* 全局样式 */
+        /* 全域樣式 */
         html, body {
             height: 100%;
             width: 100%;
@@ -22,10 +22,10 @@
             background: #f8f4e9;
             color: #333;
             line-height: 1.6;
-            font-size: 20px; /* 默认大字体，适合老年人 */
+            font-size: 20px; /* 預設大字體，適合老年人 */
         }
         
-        /* 容器布局 */
+        /* 容器佈局 */
         .container {
             display: flex;
             flex-direction: column;
@@ -34,9 +34,10 @@
             margin: 0 auto;
             background: white;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
         }
         
-        /* 顶部LOGO和导航区域 */
+        /* 頂部LOGO和導航區域 */
         .header {
             background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             color: white;
@@ -96,7 +97,7 @@
             opacity: 0.9;
         }
         
-        /* 主内容区域 */
+        /* 主內容區域 */
         .main-content {
             flex: 1;
             padding: 25px;
@@ -105,10 +106,39 @@
             align-items: center;
         }
         
-        /* 应用容器 */
+        /* 橫幅 */
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(rgba(139, 69, 19, 0.8), rgba(210, 105, 30, 0.8)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400"><rect width="1200" height="400" fill="%238B4513"/><text x="50%" y="50%" font-family="Arial" font-size="60" fill="white" text-anchor="middle" dominant-baseline="middle">三芝海天宮 - 五年千歲巡燈名冊</text></svg>') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .banner-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-content p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 應用容器 */
         .app-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             background: #F5F5DC;
             border-radius: 15px;
             padding: 25px;
@@ -116,15 +146,17 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border: 2px solid #D2691E;
         }
         
         .app-header {
-            background: #8B4513;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             color: white;
             padding: 20px;
             text-align: center;
             border-radius: 12px;
             margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         
         .app-header h2 {
@@ -137,257 +169,116 @@
             opacity: 0.9;
         }
         
-        /* 表单样式 */
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: #8B4513;
-            font-size: 1.4rem;
-        }
-        
-        .form-input {
+        /* 嵌入應用樣式 */
+        .embedded-app-container {
             width: 100%;
-            padding: 20px;
-            font-size: 1.4rem;
-            border: 3px solid #D2691E;
             border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             background: white;
-            min-height: 70px;
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: #8B4513;
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.3);
-        }
-        
-        .light-type-display {
-            background: #e8f5e8;
-            border: 3px solid #228B22;
-            color: #228B22;
-            font-weight: 600;
-            text-align: center;
-            padding: 20px;
+        .embedded-app {
+            width: 100%;
+            height: 700px;
+            border: none;
             border-radius: 12px;
-            font-size: 1.6rem;
-            min-height: 90px;
+        }
+        
+        /* 加載指示器 */
+        .loading-container {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 40px;
+            flex-direction: column;
         }
         
-        .notes-section {
-            margin-top: 20px;
-        }
-        
-        .notes-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #8B4513;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .notes-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #8B4513;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
         
-        .note-tag {
-            background: white;
-            border: 3px solid #D2691E;
-            border-radius: 25px;
-            padding: 15px 20px;
-            font-size: 1.3rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            user-select: none;
-            min-width: 100px;
+        .loading-text {
+            font-size: 1.4rem;
+            color: #8B4513;
             text-align: center;
         }
         
-        .note-tag.active {
-            background: #D2691E;
-            color: white;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+        /* 如果嵌入應用出現問題時的備用樣式 */
+        .app-fallback {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px dashed #D2691E;
         }
         
+        .app-fallback h3 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .app-fallback p {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        /* 按鈕樣式 */
         .btn {
-            display: block;
-            width: 100%;
-            padding: 22px;
+            display: inline-block;
+            padding: 15px 30px;
             border: none;
-            border-radius: 12px;
-            font-size: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.15s;
-            min-height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            min-width: 150px;
         }
         
         .btn-primary {
             background: #228B22;
             color: white;
+            box-shadow: 0 4px 8px rgba(34, 139, 34, 0.3);
         }
         
-        .btn-primary:active {
+        .btn-primary:hover {
             background: #1E7A1E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(34, 139, 34, 0.4);
         }
         
         .btn-secondary {
             background: #D2691E;
             color: white;
+            box-shadow: 0 4px 8px rgba(210, 105, 30, 0.3);
         }
         
-        .btn-secondary:active {
+        .btn-secondary:hover {
             background: #B85C14;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(210, 105, 30, 0.4);
         }
         
-        .btn-warning {
-            background: #ff9800;
-            color: white;
-        }
-        
-        .btn-warning:active {
-            background: #f57c00;
-        }
-        
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-danger:active {
-            background: #c0392b;
-        }
-        
-        .btn-disabled {
-            background: #cccccc !important;
-            color: #666666 !important;
-            cursor: not-allowed !important;
-        }
-        
-        /* 等待区域 */
-        .waiting-area {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 25px;
-            display: none;
-            flex: 1;
-            overflow-y: auto;
-        }
-        
-        .queue-info {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .queue-number {
-            font-size: 4rem;
-            color: #8B4513;
-            font-weight: 700;
-            margin: 20px 0;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 15px 25px;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            margin: 15px 0;
-            font-size: 1.4rem;
-        }
-        
-        .status-pending {
-            background: #FF8C00;
-        }
-        
-        .status-waiting {
-            background: #FF8C00;
-        }
-        
-        .status-serving {
-            background: #8B4513;
-        }
-        
-        .status-completed {
-            background: #6c757d;
-        }
-        
-        .status-rejected {
-            background: #e74c3c;
-        }
-        
-        .status-cancelled {
-            background: #6c757d;
-        }
-        
-        .meeting-link {
-            display: block;
-            text-align: center;
-            padding: 22px;
-            background: #228B22;
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-weight: 600;
-            min-height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        
-        .meeting-link.disabled {
-            background: #cccccc !important;
-            color: #666666 !important;
-            cursor: not-allowed !important;
-            pointer-events: none;
-        }
-        
-        .meeting-link.active {
-            background: #228B22;
-            color: white;
-        }
-        
-        /* 会议室按钮脉冲动画 */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(34, 139, 34, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(34, 139, 34, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 139, 34, 0); }
-        }
-        
-        .meeting-link.pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* 页脚 */
+        /* 頁腳 */
         .footer {
-            background: #8B4513;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             color: white;
             padding: 25px;
             text-align: center;
@@ -419,7 +310,7 @@
             background: rgba(255, 255, 255, 0.3);
         }
         
-        /* 工具按钮 */
+        /* 工具按鈕 */
         .text-size-toggle {
             position: fixed;
             bottom: 25px;
@@ -435,30 +326,15 @@
             box-shadow: 0 6px 15px rgba(0,0,0,0.2);
             z-index: 1000;
             border: 3px solid #FFD700;
+            transition: all 0.3s;
         }
         
-        /* 通知样式 */
-        .notification-toast {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            z-index: 1002;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-            animation: slideIn 0.3s ease-out;
-            font-size: 1.3rem;
+        .text-size-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
-        @keyframes slideIn {
-            from { transform: translate(-50%, -100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-        
-        /* 装饰元素 */
+        /* 裝飾元素 */
         .decoration {
             position: absolute;
             opacity: 0.1;
@@ -479,7 +355,7 @@
             color: white;
         }
         
-        /* 响应式设计 */
+        /* 響應式設計 */
         @media (max-width: 768px) {
             .main-content {
                 padding: 15px;
@@ -511,13 +387,20 @@
                 padding: 20px;
             }
             
-            .notes-tags {
-                gap: 10px;
+            .banner {
+                height: 150px;
             }
             
-            .note-tag {
-                min-width: 90px;
-                padding: 12px 18px;
+            .banner-content h2 {
+                font-size: 2rem;
+            }
+            
+            .banner-content p {
+                font-size: 1.1rem;
+            }
+            
+            .embedded-app {
+                height: 600px;
             }
         }
         
@@ -538,27 +421,40 @@
                 padding: 15px;
             }
             
-            .form-input, .btn, .meeting-link {
-                min-height: 65px;
+            .banner {
+                height: 120px;
+            }
+            
+            .banner-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .banner-content p {
+                font-size: 1rem;
+            }
+            
+            .app-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .app-header p {
+                font-size: 1.2rem;
+            }
+            
+            .embedded-app {
+                height: 500px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1.2rem;
+                min-width: 120px;
             }
         }
         
-        /* 小字体模式 */
+        /* 小字體模式 */
         .small-text {
             font-size: 16px !important;
-        }
-        
-        .small-text .form-input,
-        .small-text .btn,
-        .small-text .alert,
-        .small-text .form-label,
-        .small-text .notes-title {
-            font-size: 1.1rem !important;
-        }
-        
-        .small-text .note-tag {
-            font-size: 1rem;
-            padding: 10px 15px;
         }
         
         .small-text .app-header h2 {
@@ -569,107 +465,81 @@
             font-size: 1.2rem;
         }
         
-        .small-text .queue-number {
-            font-size: 3rem;
+        .small-text .banner-content h2 {
+            font-size: 2rem;
         }
         
-        .small-text .status-badge {
-            font-size: 1.2rem;
-            padding: 12px 20px;
-        }
-        
-        .small-text .light-type-display {
-            font-size: 1.3rem;
+        .small-text .banner-content p {
+            font-size: 1.1rem;
         }
         
         .small-text .footer p {
             font-size: 1rem;
         }
         
-        /* 横幅图片 */
-        .banner {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(rgba(139, 69, 19, 0.7), rgba(210, 105, 30, 0.7)), 
-                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400"><rect width="1200" height="400" fill="%238B4513"/><text x="50%" y="50%" font-family="Arial" font-size="60" fill="white" text-anchor="middle" dominant-baseline="middle">三芝海天宫 - 五年千岁巡灯名册</text></svg>') center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .small-text .btn {
+            font-size: 1.1rem;
+        }
+        
+        .small-text .loading-text {
+            font-size: 1.2rem;
+        }
+        
+        .small-text .app-fallback h3 {
+            font-size: 1.6rem;
+        }
+        
+        .small-text .app-fallback p {
+            font-size: 1.1rem;
+        }
+        
+        /* 動畫效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* 通知樣式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
             color: white;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 10px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideInRight 0.5s ease-out;
+            font-size: 1.2rem;
+            max-width: 300px;
         }
         
-        .banner-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
-        .banner-content p {
-            font-size: 1.3rem;
-            max-width: 800px;
-            margin: 0 auto;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        .notification.success {
+            background: #228B22;
         }
         
-        /* 加载指示器 */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
+        .notification.error {
+            background: #e74c3c;
         }
         
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #8B4513;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* 嵌入应用样式 */
-        .embedded-app {
-            width: 100%;
-            height: 600px;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 如果嵌入应用出现问题时的备用样式 */
-        .app-fallback {
-            display: none;
-            text-align: center;
-            padding: 40px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        
-        .app-fallback h3 {
-            color: #8B4513;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-        
-        .app-fallback p {
-            margin-bottom: 20px;
-            font-size: 1.3rem;
+        .notification.info {
+            background: #3498db;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 顶部LOGO和导航 -->
+        <!-- 頂部LOGO和導航 -->
         <header class="header">
             <div class="decoration decoration-1">
                 <i class="fas fa-temple-buddhist"></i>
@@ -683,8 +553,8 @@
                         <i class="fas fa-temple-buddhist"></i>
                     </div>
                     <div class="temple-title">
-                        <h1>三芝海天宫</h1>
-                        <p>五年千岁巡安灯赐福</p>
+                        <h1>三芝海天宮</h1>
+                        <p>五年千歲巡安燈賜福</p>
                     </div>
                     <div class="logo-img">
                         <i class="fas fa-praying-hands"></i>
@@ -693,108 +563,118 @@
             </div>
         </header>
         
-        <!-- 主内容区域 -->
+        <!-- 主內容區域 -->
         <main class="main-content">
-            <!-- 横幅 -->
-            <div class="banner">
+            <!-- 橫幅 -->
+            <div class="banner fade-in">
                 <div class="banner-content">
-                    <h2>五年千岁巡灯名册解惑报名</h2>
-                    <p>在线报名参与五年千岁巡安灯赐福，获得神明指引与保佑</p>
+                    <h2>五年千歲巡燈名冊解惑報名</h2>
+                    <p>線上報名參與五年千歲巡安燈賜福，獲得神明指引與保佑</p>
                 </div>
             </div>
             
-            <!-- 应用容器 -->
-            <div class="app-container">
+            <!-- 應用容器 -->
+            <div class="app-container fade-in">
                 <div class="app-header">
-                    <h2><i>五年千岁-巡安灯名册</i></h2>
-                    <p>解惑线上报名服务</p>
+                    <h2><i>五年千歲-巡安燈名冊</i></h2>
+                    <p>解惑線上報名服務</p>
                 </div>
                 
-                <!-- 加载指示器 -->
+                <!-- 加載指示器 -->
                 <div class="loading-container" id="loading-indicator">
                     <div class="loading-spinner"></div>
+                    <div class="loading-text">正在載入報名系統，請稍候...</div>
                 </div>
                 
-                <!-- 嵌入应用 -->
-                <iframe 
-                    class="embedded-app" 
-                    id="embedded-app"
-                    src="https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client"
-                    onload="hideLoading()"
-                    allow="autoplay; encrypted-media; fullscreen"
-                    allowfullscreen>
-                </iframe>
+                <!-- 嵌入應用 -->
+                <div class="embedded-app-container" id="app-container">
+                    <iframe 
+                        class="embedded-app" 
+                        id="embedded-app"
+                        src="https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client"
+                        onload="hideLoading()"
+                        allow="autoplay; encrypted-media; fullscreen"
+                        allowfullscreen>
+                    </iframe>
+                </div>
                 
-                <!-- 备用应用界面 -->
+                <!-- 備用應用界面 -->
                 <div class="app-fallback" id="app-fallback">
-                    <h3>应用加载失败</h3>
-                    <p>抱歉，无法加载报名应用。请检查您的网络连接或稍后再试。</p>
+                    <h3>應用載入失敗</h3>
+                    <p>抱歉，無法載入報名應用。請檢查您的網路連線或稍後再試。</p>
                     <button class="btn btn-primary" onclick="retryLoadApp()">
-                        <i class="fas fa-redo"></i> 重新加载
+                        <i class="fas fa-redo"></i> 重新載入
                     </button>
                     <div style="margin-top: 20px;">
-                        <p>或者，您可以直接访问：</p>
+                        <p>或者，您可以直接訪問：</p>
                         <a href="https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client" 
                            target="_blank" 
                            class="btn btn-secondary">
-                            <i class="fas fa-external-link-alt"></i> 直接访问报名页面
+                            <i class="fas fa-external-link-alt"></i> 直接訪問報名頁面
                         </a>
                     </div>
                 </div>
             </div>
         </main>
         
-        <!-- 页脚 -->
+        <!-- 頁腳 -->
         <footer class="footer">
             <div class="footer-content">
-                <p><i class="fas fa-map-marker-alt"></i> 新北市三芝区浅水湾街11-1号1楼E栋</p>
-                <p><i class="fas fa-phone"></i> 服务专线：0961-321-166</p>
+                <p><i class="fas fa-map-marker-alt"></i> 新北市三芝區淺水灣街11-1號1樓E棟</p>
+                <p><i class="fas fa-phone"></i> 服務專線：0961-321-166</p>
                 <div class="footer-divider"></div>
-                <p>五年千岁巡安灯赐福 &copy; 2025 三芝海天宫 版权所有</p>
+                <p>五年千歲巡安燈賜福 &copy; 2025 三芝海天宮 版權所有</p>
             </div>
         </footer>
     </div>
     
-    <!-- 字体大小切换按钮 -->
-    <button class="text-size-toggle" id="text-size-toggle" title="调整字体大小">
+    <!-- 字體大小切換按鈕 -->
+    <button class="text-size-toggle" id="text-size-toggle" title="調整字體大小">
         <i class="fas fa-text-height"></i>
     </button>
 
     <script>
-        // 初始化变量
-        let isLargeText = true; // 默认使用大字体
+        // 初始化變數
+        let isLargeText = true; // 預設使用大字體
         let appLoadTimeout = null;
         
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化应用
+            // 初始化應用
             initializeApp();
         });
         
         function initializeApp() {
-            // 应用字体设定
-            if (!isLargeText) {
+            // 應用字體設定
+            const savedTextSize = localStorage.getItem('clientLargeText');
+            if (savedTextSize === 'false') {
+                isLargeText = false;
                 document.body.classList.add('small-text');
                 updateTextSizeToggle(false);
             }
             
             setupEventListeners();
             
-            // 设置应用加载超时检查
-            appLoadTimeout = setTimeout(showAppFallback, 10000); // 10秒后显示备用界面
+            // 設置應用載入超時檢查
+            appLoadTimeout = setTimeout(showAppFallback, 15000); // 15秒後顯示備用界面
+            
+            // 顯示載入通知
+            showNotification('系統正在初始化，請稍候...', 'info');
         }
         
         function setupEventListeners() {
             document.getElementById('text-size-toggle').addEventListener('click', toggleTextSize);
             
-            // 监听嵌入应用加载完成
+            // 監聽嵌入應用載入完成
             document.getElementById('embedded-app').addEventListener('load', function() {
                 clearTimeout(appLoadTimeout);
                 hideLoading();
+                showNotification('報名系統載入完成！', 'success');
             });
             
-            // 监听嵌入应用加载错误
+            // 監聽嵌入應用載入錯誤
             document.getElementById('embedded-app').addEventListener('error', function() {
                 showAppFallback();
+                showNotification('應用載入失敗，請檢查網路連線', 'error');
             });
         }
         
@@ -803,55 +683,123 @@
             document.body.classList.toggle('small-text', !isLargeText);
             localStorage.setItem('clientLargeText', isLargeText);
             updateTextSizeToggle(isLargeText);
+            
+            // 顯示通知
+            const message = isLargeText ? '已切換為大字體模式' : '已切換為正常字體模式';
+            showNotification(message, 'info');
         }
         
         function updateTextSizeToggle(isLarge) {
             const button = document.getElementById('text-size-toggle');
             if (isLarge) {
-                button.title = '切换为小字体';
+                button.title = '切換為正常字體';
                 button.innerHTML = '<i class="fas fa-text-width"></i>';
             } else {
-                button.title = '切换为大字体';
+                button.title = '切換為大字體';
                 button.innerHTML = '<i class="fas fa-text-height"></i>';
             }
         }
         
         function hideLoading() {
             document.getElementById('loading-indicator').style.display = 'none';
-            document.getElementById('embedded-app').style.display = 'block';
+            document.getElementById('app-container').style.display = 'block';
         }
         
         function showAppFallback() {
             document.getElementById('loading-indicator').style.display = 'none';
-            document.getElementById('embedded-app').style.display = 'none';
+            document.getElementById('app-container').style.display = 'none';
             document.getElementById('app-fallback').style.display = 'block';
         }
         
         function retryLoadApp() {
             document.getElementById('loading-indicator').style.display = 'flex';
             document.getElementById('app-fallback').style.display = 'none';
-            document.getElementById('embedded-app').style.display = 'none';
+            document.getElementById('app-container').style.display = 'none';
             
-            // 重新加载嵌入应用
+            // 重新載入嵌入應用
             const iframe = document.getElementById('embedded-app');
             iframe.src = iframe.src;
             
-            // 重新设置超时检查
-            appLoadTimeout = setTimeout(showAppFallback, 10000);
+            // 重新設置超時檢查
+            appLoadTimeout = setTimeout(showAppFallback, 15000);
+            
+            // 顯示通知
+            showNotification('正在重新載入應用...', 'info');
         }
         
-        // 页面可见性监听 - 当页面重新可见时检查应用状态
+        // 頁面可見性監聽 - 當頁面重新可見時檢查應用狀態
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
-                // 页面重新可见时，检查嵌入应用是否正常显示
+                // 頁面重新可見時，檢查嵌入應用是否正常顯示
                 const iframe = document.getElementById('embedded-app');
                 if (iframe.style.display === 'none' && document.getElementById('app-fallback').style.display === 'none') {
-                    // 如果两者都不可见，可能是加载问题，尝试重新显示加载指示器
+                    // 如果兩者都不可見，可能是載入問題，嘗試重新顯示載入指示器
                     document.getElementById('loading-indicator').style.display = 'flex';
                     iframe.style.display = 'none';
                 }
             }
         });
+        
+        // 顯示通知函數
+        function showNotification(message, type) {
+            // 移除現有通知
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // 創建新通知
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}" style="margin-right: 10px;"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 3秒後自動移除通知
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+        
+        // 添加滾動動畫效果
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                if (isElementInViewport(el)) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
+        }
+        
+        // 初始設置動畫元素
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        });
+        
+        // 監聽滾動事件
+        window.addEventListener('scroll', handleScrollAnimation);
+        // 初始檢查一次
+        setTimeout(handleScrollAnimation, 100);
     </script>
 </body>
 </html>
