@@ -4,141 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>三芝海天宮 - 五年千歲巡燈名冊解惑報名</title>
-    
-    <meta name="description" content="歡迎線上報名三芝海天宮的五年千歲巡燈解惑服務。">
-    <meta property="og:title" content="三芝海天宮 - 報名系統">
-    <meta property="og:description" content="五年千歲巡燈名冊解惑線上報名。">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="/favicon.png">
-
     <style>
-        /* 基本樣式重設 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         html, body {
             height: 100%;
             width: 100%;
-            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-            background-color: #f0f2f5; /* 給一個柔和的背景色 */
+            font-family: 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+            background-color: #f5f5f5;
         }
         
-        /* 整體佈局 */
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh; /* 佔滿整個可視高度 */
-        }
-
-        /* 頁首 */
-        header {
-            background-color: #ffffff;
-            padding: 15px 20px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            flex-shrink: 0; /* 防止頁首被壓縮 */
-        }
-        header h1 {
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        /* 主要內容區域 */
-        .main-content {
-            flex-grow: 1; /* 佔滿剩餘空間 */
-            position: relative;
-            overflow: hidden; /* 隱藏 iframe 的滾動條 */
-        }
-        
-        /* iframe 樣式 */
-        iframe {
+        #app-container {
             width: 100%;
             height: 100%;
-            border: none;
-            display: block;
-        }
-        
-        /* 載入動畫 */
-        .loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #3498db;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1.5s linear infinite;
-            z-index: 10;
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        /* 頁尾 */
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            flex-shrink: 0; /* 防止頁尾被壓縮 */
-            font-size: 0.875rem;
+            position: relative;
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <header>
-            <h1>三芝海天宮 - 五年千歲巡燈解惑報名</h1>
-        </header>
-
-        <main class="main-content">
-            <div id="loader" class="loader"></div>
-            
-            <div id="iframe-container" style="visibility: hidden;">
-                </div>
-        </main>
-
-        <footer>
-            <p>&copy; 2025 三芝海天宮. All Rights Reserved.</p>
-        </footer>
-    </div>
+    <div id="app-container"></div>
 
     <script>
-        // JavaScript 用於動態載入 iframe 並處理載入動畫
-        (function() {
-            const iframeContainer = document.getElementById('iframe-container');
-            const loader = document.getElementById('loader');
-            
-            // 1. 建立 iframe 元素
+        // 动态创建iframe，使URL难以直接从源码中获取
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('app-container');
             const iframe = document.createElement('iframe');
             
-            // 2. 設定 iframe 屬性
-            // 為了隱藏原始碼，我們不在 HTML 中直接寫 src
-            const iframeSrc = "https://script.google.com/macros/s/AKfycbwIroGOdugiiGjEdlCL4foo4x53zd0OGhr5enwkKPulIXJMqRPdPYPdSJaJ_lg1BwKBQA/exec?view=client";
-            iframe.src = iframeSrc;
-            iframe.allow = "autoplay; encrypted-media; fullscreen";
-            iframe.allowFullscreen = true;
+            // 使用URL编码技术增加获取难度
+            const encodedUrl = btoa('aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3SXJvR09kdWdpaUdqRWRsQ0w0Zm9vNHg1M3pkME9HaHI1ZW53a0tQdWxJWEpNcVJQZFBZUGRTSmFKLWxnMUJ3S0JRQS9leGVjP3ZpZXc9Y2xpZW50');
+            const decodedUrl = atob(encodedUrl);
             
-            // 3. 監聽 iframe 載入完成事件
-            iframe.onload = function() {
-                // 隱藏載入動畫
-                loader.style.display = 'none';
-                // 顯示 iframe
-                iframeContainer.style.visibility = 'visible';
-            };
+            iframe.src = decodedUrl;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+            iframe.setAttribute('allowfullscreen', '');
             
-            // 4. 將 iframe 加入到容器中
-            iframeContainer.appendChild(iframe);
-        })();
+            container.appendChild(iframe);
+        });
+        
+        // 防止右键查看源代码
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 防止F12开发者工具
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+               (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+               (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+               (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
-
 </body>
 </html>
