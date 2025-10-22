@@ -4,29 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>三芝海天宮 - 五年千歲巡燈名冊解惑報名</title>
-    
-    <!-- Open Graph Meta Tags for LINE/社交媒體分享 -->
-    <meta property="og:title" content="三芝海天宮 - 五年千歲巡燈名冊解惑報名">
-    <meta property="og:description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，歡迎信眾踴躍參與線上解惑服務">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="三芝海天宮">
-    <meta property="og:locale" content="zh_TW">
-    
-    <!-- 其他 Meta Tags -->
-    <meta name="description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，提供線上排隊解惑服務">
-    <meta name="keywords" content="三芝海天宮,五年千歲,巡燈,解惑,報名,光明燈,財神燈,太歲燈">
-    
-    <!-- 防止快取 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
     <style>
         * {
             margin: 0;
@@ -41,9 +18,8 @@
         html, body {
             height: 100%;
             width: 100%;
-            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            font-family: 'Microsoft JhengHei', sans-serif;
             overflow: hidden;
-            background: #F5F5DC;
         }
         
         .container {
@@ -51,8 +27,6 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            position: relative;
-            overflow: hidden;
         }
         
         /* 頭部區域 */
@@ -60,72 +34,26 @@
             background: linear-gradient(135deg, #5D4037 0%, #8B4513 100%);
             color: white;
             padding: 15px 20px;
-            position: relative;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
             border-bottom: 5px solid #D2691E;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .temple-logo {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .logo-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #FFD700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
         .temple-text h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 5px;
-            font-weight: 900;
+            font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-            color: #FFD700;
         }
         
         .temple-text .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.95;
             font-weight: 500;
-            color: white;
+            color: #FFD700;
         }
         
-        .banner-image {
-            flex: 1;
-            max-width: 400px;
-            height: 80px;
-            margin-left: 30px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        
-        .banner-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* 主內容區域 - 嵌入iframe */
+        /* 主內容區域 */
         .main-content {
             flex: 1;
             position: relative;
@@ -136,7 +64,6 @@
         .iframe-container {
             width: 100%;
             height: 100%;
-            position: relative;
         }
         
         iframe {
@@ -144,99 +71,6 @@
             height: 100%;
             border: none;
             display: block;
-        }
-        
-        /* 加載狀態 */
-        .loading-state {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loading-content {
-            text-align: center;
-            color: white;
-            max-width: 500px;
-            padding: 0 20px;
-        }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        .loading-text {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        /* 錯誤狀態 */
-        .error-state {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-        
-        .error-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #FF6B6B;
-        }
-        
-        .error-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .error-message {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            opacity: 0.9;
-            max-width: 500px;
-            line-height: 1.6;
-        }
-        
-        .retry-btn {
-            background: #FFD700;
-            color: #8B4513;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         /* 保護浮水印 */
@@ -253,175 +87,43 @@
         
         .protection-text {
             position: absolute;
-            font-size: 24px;
+            font-size: 20px;
             color: #000;
             transform: rotate(-45deg);
             white-space: nowrap;
         }
         
-        /* 動畫效果 */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-        
         /* 響應式設計 */
-        @media (max-width: 1024px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .banner-image {
-                margin-left: 0;
-                max-width: 300px;
-            }
-        }
-        
         @media (max-width: 768px) {
-            .header {
-                padding: 12px 15px;
-                min-height: 100px;
-            }
-            
             .temple-text h1 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
             
             .temple-text .subtitle {
                 font-size: 1rem;
             }
-            
-            .logo-image {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .banner-image {
-                height: 60px;
-                max-width: 250px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .temple-logo {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .temple-text h1 {
-                font-size: 1.4rem;
-            }
-            
-            .banner-image {
-                max-width: 200px;
-                height: 50px;
-            }
-            
-            .loading-text {
-                font-size: 1.1rem;
-            }
-            
-            .error-title {
-                font-size: 1.3rem;
-            }
-        }
-        
-        /* 橫屏模式優化 */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .header {
-                padding: 10px 15px;
-                min-height: 80px;
-            }
-            
-            .logo-image {
-                width: 50px;
-                height: 50px;
-            }
-            
-            .temple-text h1 {
-                font-size: 1.3rem;
-            }
-            
-            .banner-image {
-                height: 40px;
-            }
-        }
-        
-        /* 禁止文字選擇 */
-        .no-selection {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
     </style>
 </head>
-<body class="no-selection" oncontextmenu="return false">
+<body oncontextmenu="return false">
     <div class="container">
         <!-- 頭部區域 -->
         <header class="header">
-            <div class="header-content">
-                <div class="temple-logo">
-                    <!-- 神像圖片 -->
-                    <img src="deity-image.jpg" alt="三芝海天宮神像" class="logo-image" id="deityImage">
-                    <div class="temple-text">
-                        <h1>三芝海天宮</h1>
-                        <div class="subtitle">五年千歲巡燈名冊解惑報名系統</div>
-                    </div>
-                </div>
-                
-                <!-- 神明橫幅圖片 -->
-                <div class="banner-image">
-                    <img src="banner-image.jpg" alt="五年千歲巡燈" id="bannerImage">
-                </div>
+            <div class="temple-text">
+                <h1>三芝海天宮</h1>
+                <div class="subtitle">五年千歲巡燈名冊解惑報名系統</div>
             </div>
         </header>
         
         <!-- 主內容區域 -->
         <main class="main-content">
-            <!-- 加載狀態 -->
-            <div class="loading-state" id="loadingState">
-                <div class="loading-content fade-in">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">系統載入中，請稍候...</div>
-                </div>
-            </div>
-            
-            <!-- 錯誤狀態 -->
-            <div class="error-state" id="errorState">
-                <div class="error-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="error-title">系統連接異常</div>
-                <div class="error-message">
-                    抱歉，目前無法連接到報名系統。請檢查網路連線或稍後再試。
-                </div>
-                <button class="retry-btn" id="retryBtn">
-                    <i class="fas fa-redo"></i> 重新載入
-                </button>
-            </div>
-            
             <!-- 嵌入客戶端系統 -->
             <div class="iframe-container">
                 <iframe 
                     src="https://script.google.com/macros/s/AKfycbzKFJTprEjpgc5qscu2UpPVl-d2graWQy2DETPiwR4UWvyA5n6jUrormYcqQ0_PyJwFKw/exec?view=client"
                     id="clientFrame"
                     allow="autoplay; encrypted-media; fullscreen"
-                    allowfullscreen
-                    loading="eager">
+                    allowfullscreen>
                 </iframe>
             </div>
         </main>
@@ -431,113 +133,21 @@
     <div class="protection-overlay" id="protectionOverlay"></div>
 
     <script>
-        // DOM 元素
-        const loadingState = document.getElementById('loadingState');
-        const errorState = document.getElementById('errorState');
-        const clientFrame = document.getElementById('clientFrame');
-        const retryBtn = document.getElementById('retryBtn');
-        const protectionOverlay = document.getElementById('protectionOverlay');
-        const deityImage = document.getElementById('deityImage');
-        const bannerImage = document.getElementById('bannerImage');
-        
-        // 設定 Google Apps Script 部署 URL
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzKFJTprEjpgc5qscu2UpPVl-d2graWQy2DETPiwR4UWvyA5n6jUrormYcqQ0_PyJwFKw/exec?view=client';
-        
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 設置 iframe 來源
-            clientFrame.src = scriptUrl;
-            
-            // 綁定事件監聽器
-            bindEventListeners();
-            
-            // 開始載入計時器
-            startLoadTimer();
-            
-            // 設置保護浮水印
-            setupProtectionOverlay();
-            
-            // 設置圖片錯誤處理
-            setupImageErrorHandling();
-        });
-        
-        function bindEventListeners() {
-            // iframe 載入成功
-            clientFrame.addEventListener('load', function() {
-                setTimeout(() => {
-                    loadingState.style.opacity = '0';
-                    setTimeout(() => {
-                        loadingState.style.display = 'none';
-                    }, 500);
-                }, 1000);
-            });
-            
-            // iframe 載入錯誤
-            clientFrame.addEventListener('error', function() {
-                showErrorState();
-            });
-            
-            // 重試按鈕
-            retryBtn.addEventListener('click', function() {
-                retryLoad();
-            });
-        }
-        
-        function startLoadTimer() {
-            // 設定8秒後檢查是否仍處於載入狀態
-            setTimeout(() => {
-                if (loadingState.style.display !== 'none') {
-                    // 如果仍在載入，顯示錯誤狀態
-                    showErrorState();
-                }
-            }, 8000);
-        }
-        
-        function showErrorState() {
-            loadingState.style.display = 'none';
-            errorState.style.display = 'flex';
-            errorState.classList.add('fade-in');
-        }
-        
-        function retryLoad() {
-            errorState.style.display = 'none';
-            loadingState.style.display = 'flex';
-            loadingState.style.opacity = '1';
-            
-            // 重新載入 iframe
-            clientFrame.src = scriptUrl + '&t=' + new Date().getTime();
-            
-            // 重新開始載入計時器
-            startLoadTimer();
-        }
-        
+        // 設置保護浮水印
         function setupProtectionOverlay() {
-            // 創建保護浮水印
+            const protectionOverlay = document.getElementById('protectionOverlay');
             const text = '三芝海天宮五年千歲巡燈系統';
-            for (let i = 0; i < 50; i++) {
+            
+            for (let i = 0; i < 30; i++) {
                 const textElement = document.createElement('div');
                 textElement.className = 'protection-text';
                 textElement.textContent = text;
                 textElement.style.left = Math.random() * 100 + 'vw';
                 textElement.style.top = Math.random() * 100 + 'vh';
-                textElement.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                textElement.style.fontSize = (Math.random() * 16 + 14) + 'px';
                 textElement.style.opacity = Math.random() * 0.03 + 0.01;
                 protectionOverlay.appendChild(textElement);
             }
-        }
-        
-        function setupImageErrorHandling() {
-            // 神像圖片錯誤處理
-            deityImage.addEventListener('error', function() {
-                // 如果圖片載入失敗，使用 Font Awesome 圖標替代
-                this.outerHTML = '<div class="logo-image" style="display: flex; align-items: center; justify-content: center; background: #8B4513; color: white; font-size: 2rem;"><i class="fas fa-temple-buddhist"></i></div>';
-            });
-            
-            // 橫幅圖片錯誤處理
-            bannerImage.addEventListener('error', function() {
-                // 如果圖片載入失敗，使用漸層背景替代
-                this.outerHTML = '<div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">五年千歲巡燈賜福</div>';
-            });
         }
         
         // 禁止右鍵選單
@@ -558,9 +168,11 @@
             return false;
         });
         
-        // 禁止 F12 開發者工具
+        // 禁止F12開發者工具
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.key === 'u')) {
                 e.preventDefault();
                 return false;
             }
@@ -571,25 +183,10 @@
             debugger;
         }, 100);
         
-        // 處理瀏覽器返回按鈕
-        window.addEventListener('popstate', function(event) {
-            clientFrame.contentWindow.location.reload();
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setupProtectionOverlay();
         });
-        
-        // 優化移動設備體驗
-        if ('ontouchstart' in window) {
-            document.documentElement.style.cursor = 'pointer';
-        }
-        
-        // 防止雙擊縮放
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
     </script>
 </body>
 </html>
