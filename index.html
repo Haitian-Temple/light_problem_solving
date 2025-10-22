@@ -7,8 +7,8 @@
     
     <!-- Open Graph Meta Tags for LINE/社交媒體分享 -->
     <meta property="og:title" content="三芝海天宮 - 五年千歲巡燈名冊解惑報名">
-    <meta property="og:description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，歡迎信眾踴躍參與">
-    <meta property="og:image" content="https://drive.google.com/file/d/100mY1QwK6vh845DxJYh4XZxVw-KUeWwR/view?usp=sharing">
+    <meta property="og:description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，歡迎信眾踴躍參與線上解惑服務">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Haitian-Temple/light_problem_solving/main/temple-image.jpg">
     <meta property="og:url" content="https://haitian-temple.github.io/light_problem_solving/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="三芝海天宮">
@@ -17,11 +17,21 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="三芝海天宮 - 五年千歲巡燈名冊解惑報名">
-    <meta name="twitter:description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，歡迎信眾踴躍參與">
-    <meta name="twitter:image" content="https://drive.google.com/file/d/100mY1QwK6vh845DxJYh4XZxVw-KUeWwR/view?usp=sharing">
+    <meta name="twitter:description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，歡迎信眾踴躍參與線上解惑服務">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Haitian-Temple/light_problem_solving/main/temple-image.jpg">
     
     <!-- 其他 Meta Tags -->
-    <meta name="description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統">
+    <meta name="description" content="三芝海天宮五年千歲巡燈名冊解惑報名系統，提供線上排隊解惑服務">
+    <meta name="keywords" content="三芝海天宮,五年千歲,巡燈,解惑,報名,光明燈,財神燈,太歲燈">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🙏</text></svg>">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -33,8 +43,89 @@
         html, body {
             height: 100%;
             width: 100%;
-            font-family: 'Microsoft JhengHei', sans-serif;
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
             overflow: hidden;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 頭部區域 */
+        .header {
+            background: linear-gradient(135deg, #5D4037 0%, #8B4513 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 5px solid #D2691E;
+        }
+        
+        .temple-info {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .temple-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-icon i {
+            font-size: 2.2rem;
+            color: #8B4513;
+        }
+        
+        .temple-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+        
+        .temple-text .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 500;
+            color: #FFD700;
+        }
+        
+        /* 主內容區域 - 嵌入iframe */
+        .main-content {
+            flex: 1;
+            position: relative;
+            background: #F5F5DC;
+            overflow: hidden;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
         
         iframe {
@@ -43,13 +134,620 @@
             border: none;
             display: block;
         }
+        
+        /* 加載狀態 */
+        .loading-state {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+            max-width: 500px;
+            padding: 0 20px;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        .loading-text {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .loading-details {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .loading-details ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .loading-details li {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .loading-details i {
+            color: #FFD700;
+        }
+        
+        /* 錯誤狀態 */
+        .error-state {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #FF6B6B;
+        }
+        
+        .error-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            background: #FFD700;
+            color: #8B4513;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* 頁尾 */
+        .footer {
+            background: #5D4037;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border-top: 3px solid #8B4513;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .contact-item i {
+            color: #FFD700;
+            width: 20px;
+        }
+        
+        .footer-divider {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 15px 0;
+        }
+        
+        .copyright {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+        
+        /* 操作指引浮層 */
+        .help-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 20;
+        }
+        
+        .help-btn {
+            width: 60px;
+            height: 60px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .help-btn:hover {
+            transform: scale(1.1);
+            background: #A0522D;
+        }
+        
+        .help-content {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 300px;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .help-content.show {
+            display: block;
+        }
+        
+        .help-title {
+            font-size: 1.3rem;
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .help-steps {
+            list-style: none;
+        }
+        
+        .help-steps li {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #5D4037;
+        }
+        
+        .help-steps li:before {
+            content: '•';
+            color: #D2691E;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* 動畫效果 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .temple-text h1 {
+                font-size: 1.8rem;
+            }
+            
+            .temple-text .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo-icon i {
+                font-size: 1.8rem;
+            }
+            
+            .loading-text {
+                font-size: 1.2rem;
+            }
+            
+            .loading-details {
+                font-size: 1rem;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .contact-item {
+                font-size: 1rem;
+                justify-content: flex-start;
+            }
+            
+            .help-content {
+                width: 280px;
+                right: -10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .temple-text h1 {
+                font-size: 1.6rem;
+            }
+            
+            .temple-logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .loading-spinner {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .footer {
+                padding: 15px;
+            }
+            
+            .help-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .help-content {
+                width: 260px;
+                right: -20px;
+            }
+        }
+        
+        /* 橫屏模式優化 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .temple-logo {
+                margin-bottom: 10px;
+            }
+            
+            .logo-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .footer {
+                padding: 12px 20px;
+            }
+            
+            .contact-info {
+                grid-template-columns: repeat(3, 1fr);
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <iframe 
-        src="https://reurl.cc/yAxZGM"
-        allow="autoplay; encrypted-media; fullscreen"
-        allowfullscreen>
-    </iframe>
+    <div class="container">
+        <!-- 頭部區域 -->
+        <header class="header">
+            <div class="temple-info">
+                <div class="temple-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-hands-praying"></i>
+                    </div>
+                    <div class="temple-text">
+                        <h1>三芝海天宮</h1>
+                        <div class="subtitle">五年千歲巡燈名冊解惑報名系統</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主內容區域 -->
+        <main class="main-content">
+            <!-- 加載狀態 -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-content fade-in">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">系統載入中，請稍候...</div>
+                    <div class="loading-details">
+                        <p>正在為您連接五年千歲巡燈解惑報名系統</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> 系統安全驗證通過</li>
+                            <li><i class="fas fa-check"></i> 連線加密保護中</li>
+                            <li><i class="fas fa-sync-alt fa-spin"></i> 載入報名介面</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 錯誤狀態 -->
+            <div class="error-state" id="errorState">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="error-title">系統連接異常</div>
+                <div class="error-message">
+                    抱歉，目前無法連接到報名系統。這可能是由於網路連線問題或系統維護中，請稍後再試或聯繫廟方人員。
+                </div>
+                <button class="retry-btn" id="retryBtn">
+                    <i class="fas fa-redo"></i> 重新載入
+                </button>
+            </div>
+            
+            <!-- 嵌入客戶端系統 -->
+            <div class="iframe-container">
+                <iframe 
+                    src="https://script.google.com/macros/s/您的ScriptID/exec?view=client"
+                    id="clientFrame"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen
+                    loading="eager">
+                </iframe>
+            </div>
+        </main>
+        
+        <!-- 頁尾 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>新北市三芝區淺水灣街11-1號1樓E棟</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>服務專線：0961-321-166</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>服務時間：每日 08:00 - 20:00</span>
+                    </div>
+                </div>
+                <div class="footer-divider"></div>
+                <div class="copyright">
+                    <p>五年千歲巡安燈賜福 &copy; 2025 三芝海天宮 版權所有</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- 操作指引浮層 -->
+        <div class="help-overlay">
+            <button class="help-btn" id="helpBtn">
+                <i class="fas fa-question"></i>
+            </button>
+            <div class="help-content" id="helpContent">
+                <div class="help-title">操作指引</div>
+                <ul class="help-steps">
+                    <li>填寫真實姓名進行報名</li>
+                    <li>選擇需要的燈種（光明燈、財神燈、太歲燈）</li>
+                    <li>點選相關注意事項（可複選）</li>
+                    <li>提交後等待系統自動審核</li>
+                    <li>審核通過後進入等待隊列</li>
+                    <li>輪到您時會收到通知，請準備進入會議室</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM 元素
+        const loadingState = document.getElementById('loadingState');
+        const errorState = document.getElementById('errorState');
+        const clientFrame = document.getElementById('clientFrame');
+        const retryBtn = document.getElementById('retryBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        const helpContent = document.getElementById('helpContent');
+        
+        // 設定 Google Apps Script 部署 URL
+        const scriptUrl = 'https://script.google.com/macros/s/您的ScriptID/exec?view=client';
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 設置 iframe 來源
+            clientFrame.src = scriptUrl;
+            
+            // 綁定事件監聽器
+            bindEventListeners();
+            
+            // 開始載入計時器
+            startLoadTimer();
+        });
+        
+        function bindEventListeners() {
+            // iframe 載入成功
+            clientFrame.addEventListener('load', function() {
+                setTimeout(() => {
+                    loadingState.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingState.style.display = 'none';
+                    }, 500);
+                }, 1000);
+            });
+            
+            // iframe 載入錯誤
+            clientFrame.addEventListener('error', function() {
+                showErrorState();
+            });
+            
+            // 重試按鈕
+            retryBtn.addEventListener('click', function() {
+                retryLoad();
+            });
+            
+            // 幫助按鈕
+            helpBtn.addEventListener('click', function() {
+                helpContent.classList.toggle('show');
+            });
+            
+            // 點擊幫助內容外部關閉
+            document.addEventListener('click', function(e) {
+                if (!helpBtn.contains(e.target) && !helpContent.contains(e.target)) {
+                    helpContent.classList.remove('show');
+                }
+            });
+            
+            // 防止幫助內容內的點擊事件冒泡
+            helpContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        function startLoadTimer() {
+            // 設定10秒後檢查是否仍處於載入狀態
+            setTimeout(() => {
+                if (loadingState.style.display !== 'none') {
+                    // 如果仍在載入，顯示錯誤狀態
+                    showErrorState();
+                }
+            }, 10000);
+        }
+        
+        function showErrorState() {
+            loadingState.style.display = 'none';
+            errorState.style.display = 'flex';
+            errorState.classList.add('fade-in');
+        }
+        
+        function retryLoad() {
+            errorState.style.display = 'none';
+            loadingState.style.display = 'flex';
+            
+            // 重新載入 iframe
+            clientFrame.src = scriptUrl + '&t=' + new Date().getTime();
+            
+            // 重新開始載入計時器
+            startLoadTimer();
+        }
+        
+        // 處理瀏覽器返回按鈕
+        window.addEventListener('popstate', function(event) {
+            // 確保 iframe 內容正確顯示
+            clientFrame.contentWindow.location.reload();
+        });
+        
+        // 優化移動設備體驗
+        if ('ontouchstart' in window) {
+            document.documentElement.style.cursor = 'pointer';
+        }
+        
+        // 防止雙擊縮放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // 優化滾動體驗
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        // 顯示載入進度（可選）
+        let loadProgress = 0;
+        const progressInterval = setInterval(() => {
+            if (loadProgress < 90) {
+                loadProgress += 10;
+                // 可以在這裡添加進度條顯示
+            }
+        }, 500);
+        
+        // iframe 載入完成後清除計時器
+        clientFrame.addEventListener('load', () => {
+            clearInterval(progressInterval);
+        });
+    </script>
 </body>
 </html>
