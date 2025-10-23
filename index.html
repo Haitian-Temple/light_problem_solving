@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三芝海天宮 - 五年千歲巡燈名冊解惑報名</title>
+    <title>三芝海天宮 - 五年千歲巡燈系統</title>
     <style>
         * {
             margin: 0;
@@ -20,44 +20,29 @@
             width: 100%;
             font-family: 'Microsoft JhengHei', sans-serif;
             overflow: hidden;
+            background: #f5f5dc;
         }
         
-        .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* 頭部區域 */
+        /* 簡潔標題 */
         .header {
             background: linear-gradient(135deg, #5D4037 0%, #8B4513 100%);
             color: white;
-            padding: 15px 20px;
+            padding: 12px 20px;
             text-align: center;
-            border-bottom: 5px solid #D2691E;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #D2691E;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
-        .temple-text h1 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+        .header h1 {
+            font-size: 1.5rem;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .temple-text .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            font-weight: 500;
-            color: #FFD700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         
         /* 主內容區域 */
         .main-content {
-            flex: 1;
+            height: calc(100vh - 60px);
             position: relative;
-            background: #F5F5DC;
             overflow: hidden;
         }
         
@@ -92,32 +77,26 @@
             transform: rotate(-45deg);
             white-space: nowrap;
         }
-        
-        /* 響應式設計 */
-        @media (max-width: 768px) {
-            .temple-text h1 {
-                font-size: 1.5rem;
-            }
-            
-            .temple-text .subtitle {
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 <body oncontextmenu="return false">
-        <main class="main-content">
-            <!-- 嵌入客戶端系統 -->
-            <div class="iframe-container">
-                <iframe 
-                    src="https://script.google.com/macros/s/AKfycbx2BMwGo2CBYSVdK3BSOe0c72VAI8d82M7ZtwE6w0ckeP5bqHIVLQcr1xo498yQbXm77Q/exec?view=client"
-                    id="clientFrame"
-                    allow="autoplay; encrypted-media; fullscreen"
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </main>
+    <!-- 簡潔標題 -->
+    <div class="header">
+        <h1>三芝海天宮 - 五年千歲巡燈系統</h1>
     </div>
+
+    <!-- 主內容區域 -->
+    <main class="main-content">
+        <!-- 嵌入客戶端系統 -->
+        <div class="iframe-container">
+            <iframe 
+                src="https://script.google.com/macros/s/AKfycbx2BMwGo2CBYSVdK3BSOe0c72VAI8d82M7ZtwE6w0ckeP5bqHIVLQcr1xo498yQbXm77Q/exec?view=client"
+                id="clientFrame"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </main>
 
     <!-- 保護浮水印 -->
     <div class="protection-overlay" id="protectionOverlay"></div>
@@ -128,7 +107,7 @@
             const protectionOverlay = document.getElementById('protectionOverlay');
             const text = '三芝海天宮五年千歲巡燈系統';
             
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 20; i++) {
                 const textElement = document.createElement('div');
                 textElement.className = 'protection-text';
                 textElement.textContent = text;
@@ -169,13 +148,21 @@
         });
         
         // 防止通過檢查元素訪問
+        let checkStatus = false;
         setInterval(function() {
-            debugger;
+            if (checkStatus) {
+                debugger;
+            }
         }, 100);
         
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             setupProtectionOverlay();
+            
+            // 當iframe載入完成後，啟用debugger保護
+            document.getElementById('clientFrame').addEventListener('load', function() {
+                checkStatus = true;
+            });
         });
     </script>
 </body>
