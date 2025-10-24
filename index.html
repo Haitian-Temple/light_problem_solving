@@ -1,220 +1,215 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三芝海天宮 - 五年千歲巡燈系統</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        html, body {
-            height: 100%;
-            width: 100%;
-            font-family: 'Microsoft JhengHei', sans-serif;
-            overflow: hidden;
-            background: #f5f5dc;
-        }
-        
-        /* 主內容區域 - 全屏 */
-        .main-content {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .iframe-container {
-            width: 100%;
-            height: 100%;
-        }
-        
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-        
-        /* 保護浮水印 */
-        .protection-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.02;
-        }
-        
-        .protection-text {
-            position: absolute;
-            font-size: 20px;
-            color: #000;
-            transform: rotate(-45deg);
-            white-space: nowrap;
-        }
-        
-        /* 載入指示器 */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #5D4037;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 10000;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loading.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #FFD700;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 20px;
-        }
-        
-        .loading-text {
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三芝海天宮 - 五年千歲巡燈系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+            background: #f5f5dc;
+        }
+        
+        /* 主內容區域 - 全屏 */
+        .main-content {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        
+        /* 保護浮水印 */
+        .protection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+        }
+        
+        .protection-text {
+            position: absolute;
+            font-size: 20px;
+            color: #000;
+            transform: rotate(-45deg);
+            white-space: nowrap;
+        }
+        
+        /* 載入指示器 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #5D4037;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #FFD700;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body oncontextmenu="return false">
-    <!-- 載入畫面 -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">載入中...</div>
-    </div>
+        <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">載入中...</div>
+    </div>
 
-    <!-- 主內容區域 -->
-    <main class="main-content">
-        <!-- 嵌入客戶端系統 -->
-        <div class="iframe-container">
-            <iframe 
-                src="https://script.google.com/macros/s/AKfycbyJfA2nP_kJwCLdz3x01-_g0ebQFAJGZZYNHkmDrqVTsSPUQTwenH-G6N1BuYjpGfCOrw/exec?view=client"
-                id="clientFrame"
-                allow="autoplay; encrypted-media; fullscreen"
-                allowfullscreen
-                onload="hideLoading()">
-            </iframe>
-        </div>
-    </main>
+        <main class="main-content">
+                <div class="iframe-container">
+            <iframe 
+                src="https://script.google.com/macros/s/AKfycbyJfA2nP_kJwCLdz3x01-_g0ebQFAJGZZYNHkmDrqVTsSPUQTwenH-G6N1BuYjpGfCOrw/exec?view=client"
+                id="clientFrame"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowfullscreen
+                onload="hideLoading()">
+            </iframe>
+        </div>
+    </main>
 
-    <!-- 保護浮水印 -->
-    <div class="protection-overlay" id="protectionOverlay"></div>
+        <div class="protection-overlay" id="protectionOverlay"></div>
 
-    <script>
-        // 設置保護浮水印
-        function setupProtectionOverlay() {
-            const protectionOverlay = document.getElementById('protectionOverlay');
-            const text = '三芝海天宮五年千歲巡燈系統';
-            
-            for (let i = 0; i < 25; i++) {
-                const textElement = document.createElement('div');
-                textElement.className = 'protection-text';
-                textElement.textContent = text;
-                textElement.style.left = Math.random() * 100 + 'vw';
-                textElement.style.top = Math.random() * 100 + 'vh';
-                textElement.style.fontSize = (Math.random() * 16 + 14) + 'px';
-                textElement.style.opacity = Math.random() * 0.03 + 0.01;
-                protectionOverlay.appendChild(textElement);
-            }
-        }
-        
-        // 隱藏載入畫面
-        function hideLoading() {
-            const loading = document.getElementById('loading');
-            setTimeout(() => {
-                loading.classList.add('hidden');
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                }, 500);
-            }, 1000);
-        }
-        
-        // 禁止右鍵選單
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // 禁止文字選擇
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // 禁止拖拽
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // 禁止F12開發者工具及其他快捷鍵
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || 
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C')) || 
-                (e.ctrlKey && e.key === 'u')) {
-                e.preventDefault();
-                return false;
-            }
-        });
-        
-        // 防止通過檢查元素訪問
-        let debugCheckEnabled = false;
-        setInterval(function() {
-            if (debugCheckEnabled) {
-                debugger;
-            }
-        }, 100);
-        
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            setupProtectionOverlay();
-            
-            // 當iframe載入完成後，啟用debugger保護
-            document.getElementById('clientFrame').addEventListener('load', function() {
-                debugCheckEnabled = true;
-            });
-            
-            // 如果iframe在10秒內未載入，隱藏載入畫面
-            setTimeout(hideLoading, 10000);
-        });
-        
-        // 額外保護：檢測開發者工具
-        (function() {
-            const element = new Image();
-            Object.defineProperty(element, 'id', {
-                get: function() {
-                    window.location.reload();
-                }
-            });
-            console.log(element);
-        })();
-    </script>
+    <script>
+        // 設置保護浮水印
+        function setupProtectionOverlay() {
+            const protectionOverlay = document.getElementById('protectionOverlay');
+            const text = '三芝海天宮五年千歲巡燈系統';
+            
+            for (let i = 0; i < 25; i++) {
+                const textElement = document.createElement('div');
+                textElement.className = 'protection-text';
+                textElement.textContent = text;
+                textElement.style.left = Math.random() * 100 + 'vw';
+                textElement.style.top = Math.random() * 100 + 'vh';
+                textElement.style.fontSize = (Math.random() * 16 + 14) + 'px';
+                textElement.style.opacity = Math.random() * 0.03 + 0.01;
+                protectionOverlay.appendChild(textElement);
+            }
+        }
+        
+        // 隱藏載入畫面 (*** 已修改 ***)
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            // 立即開始淡出，移除 1000ms 延遲
+            loading.classList.add('hidden');
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500); // 500ms 是 CSS transition 的時間
+        }
+        
+        // 禁止右鍵選單
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 禁止文字選擇
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 禁止拖拽
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // 禁止F12開發者工具及其他快捷鍵
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C')) || 
+                (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // 防止通過檢查元素訪問
+        let debugCheckEnabled = false;
+        setInterval(function() {
+            if (debugCheckEnabled) {
+                debugger;
+            }
+        }, 100);
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setupProtectionOverlay();
+            
+            // 當iframe載入完成後，啟用debugger保護
+            document.getElementById('clientFrame').addEventListener('load', function() {
+                debugCheckEnabled = true;
+            });
+            
+            // 如果iframe在10秒內未載入，隱藏載入畫面 (這個備用方案保持不變)
+            setTimeout(hideLoading, 10000);
+        });
+        
+        // 額外保護：檢測開發者工具
+        (function() {
+            const element = new Image();
+            Object.defineProperty(element, 'id', {
+                get: function() {
+                    window.location.reload();
+                }
+            });
+            console.log(element);
+        })();
+    </script>
 </body>
 </html>
